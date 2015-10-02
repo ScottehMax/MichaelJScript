@@ -8,20 +8,53 @@
 
     <style type="text/css">
         body { font-size: 15px; 
-	       font-family:sans-serif; }
+            font-family:sans-serif; }
         h1 { font-size: 25px;
-         font-weight: bold; }
+            font-weight: bold; }
         h2 { font-size: 20px;
-         font-weight: bold; }
+            font-weight: bold; }
+        canvas { border: 1px dotted;
+                 float: left; }
     </style>
+
+</head>
+
+<body>
+
+    <h1>
+        Michael J. Script
+    </h1>
+    
+    <a href="#" onclick="draw_background();return false">Click to draw background</a>
+    
+    <h3>
+        Test (canvas not visible until this is here)
+    </h3>
+
+    <canvas id="rootCanvas"></canvas>
     
     <script type="text/javascript">
         var heightVar = "750";
         var widthVar = "750";
+        
+        var rC_canvas = document.getElementById("rootCanvas");
+        var rC_context = rC_canvas.getContext("2d");
+        
+        rC_canvas.style.height = heightVar;
+        rC_canvas.style.width = widthVar;
+        rC_canvas.height = heightVar;
+        rC_canvas.width = widthVar;
+        
+        var backgroundImage = new Image();
+        backgroundImage.src = "assets/mapbackground.png"
+        backgroundImage.onload = function() {
+            //for (var x = 0, y = 0; x < widthVar && y < heightVar; x += widthVar*0.05, y += heightVar*0.05) {
+                rC_context.drawImage(backgroundImage, 0, 0);
+            //}
+        }
             
-        function draw_rootCanvas() {
-            var rC_canvas = document.getElementById("rootCanvas");
-            var rC_context = rC_canvas.getContext("2d");
+        function draw_background() {            
+            
             for (var x = 0.5; x < widthVar; x += widthVar*0.05) {
                 rC_context.moveTo(x, 0);
                 rC_context.lineTo(x, widthVar);
@@ -39,22 +72,6 @@
         }
         
     </script>
-
-</head>
-
-<body>
-
-    <h1>
-        Michael J. Script
-    </h1>
-    
-    <a href="#" onclick="draw_rootCanvas();return false">Click to draw on this canvas</a>
-    
-    <h2>
-        Test (canvas not visible until this is here)
-    </h2>
-
-    <canvas id="rootCanvas" height="750" width="750" style="border:1px dotted; float:left" ></canvas>
     
 
 
