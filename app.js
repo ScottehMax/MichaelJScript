@@ -1,3 +1,9 @@
+
+var Global = require('./js/global.js')
+var user = require('./js/user.js');
+var utils = require('./js/utils.js');
+
+
 var WebSocketServer = require('websocket').server;
 var http = require('http');
 
@@ -31,6 +37,11 @@ wsServer.on('request', function(request) {
     console.log('someone is connecting!');
 
     var connection = request.accept('echo-protocol', request.origin);
+    var new_user = new user.User(connection);
+    console.log(new_user);
+
+    console.log(Global.users);
+
     console.log((new Date()) + ' Connection accepted.');
     connection.on('message', function(message) {
         if (message.type === 'utf8') {

@@ -1,17 +1,17 @@
-function User(socket, name, class) {
+var utils = require('./utils.js');
+var Global = require('./global.js')
+
+function User(socket) {
     // User class. Constructor sets all variables and associates the object with the socket.
-    this.name = name;
     this.socket = socket;
-    this.class = class;
+    this.uuid = utils.uuid();
 
-    this.uuid = uuid();
-
-    users[this.uuid] = this;
+    Global.users[this.uuid] = this;
 
     this.health = 4;
     this.score = 0;
 
-    this.location = [randint(0, 20), randint(0, 20)];
+    this.location = [utils.randint(0, 20), utils.randint(0, 20)];
 }
 
 User.prototype.reset = function () {
@@ -25,3 +25,5 @@ User.prototype.reset = function () {
 User.prototype.leaderboard = function () {
     // TODO
 }
+
+exports.User = User;
