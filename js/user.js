@@ -4,6 +4,10 @@ function User(socket, name, class) {
     this.socket = socket;
     this.class = class;
 
+    this.uuid = uuid();
+
+    users[this.uuid] = this;
+
     this.health = 4;
     this.score = 0;
 

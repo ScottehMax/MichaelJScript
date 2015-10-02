@@ -1,0 +1,19 @@
+{
+  "name": "HackSlash",
+  "description": "A lot gem of the 80's.",
+  "version": "0.0.1b",
+  "maintainers": [
+    {
+      "name": "Scott Maxwell",
+      "email": "scott@scotteh.me",
+      "web": "scotteh.me"
+    },
+    {
+      "name": "Jordan Duncan",
+      "email": "jrdndncn@gmail.com",
+    }
+  ],
+  "dependencies": {
+    "websocket": "^1.0.22"
+  }
+}
