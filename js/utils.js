@@ -8,3 +8,7 @@ function uuid () {
         return v.toString(16);
     });
 }
+
+function datelog (s) {
+    console.log((new Date()) + ' ' + s);
+}

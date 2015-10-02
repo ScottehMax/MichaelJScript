@@ -28,10 +28,20 @@ wsServer.on('request', function(request) {
       return;
     }
 
+    console.log('someone is connecting!');
+
     var connection = request.accept('echo-protocol', request.origin);
     console.log((new Date()) + ' Connection accepted.');
     connection.on('message', function(message) {
         if (message.type === 'utf8') {
+            try {
+                var jsonresp = JSON.parse(message.utf8Data);
+                console.log(jsonresp);  
+            } catch (e) {
+                console.log(e);
+                console.log('buggered up lad');
+                connection.sendUTF('lol you suck');
+            }
             console.log('Received Message: ' + message.utf8Data);
             connection.sendUTF(message.utf8Data + ' received!');
         }
