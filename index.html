@@ -396,7 +396,7 @@
         return /[A-Z0-9]{1}/ig.test(strIn) && strIn.length == 1;
       }
 
-      set_sprite(spriteID);
+      set_sprite(spriteID.slice(-1));
       
       $('#welcome_step1').fadeOut(300).delay(0.3).css('height',0);
       setTimeout(function(){
