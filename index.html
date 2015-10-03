@@ -8,35 +8,32 @@
     "use strict";
     // Initialize everything when the window finishes loading
     var uuid;
+    var socket;
+
+    function direction(dir) {
+        socket.send(JSON.stringify({"uuid": uuid, "type": "try_move", "direction": dir}));
+    }
+
+    function set_name(name) {
+        socket.send(JSON.stringify({"uuid": uuid, "type": "set_name", "name": name}));
+    }
+
+    function set_job(job) {
+        socket.send(JSON.stringify({"uuid": uuid, "type": "set_job", "job": job}));
+    }
 
     window.addEventListener("load", function(event) {
-      var status = document.getElementById("status");
-      var url = document.getElementById("url");
-      var open = document.getElementById("open");
-      var close = document.getElementById("close");
-      var send = document.getElementById("send");
-      var text = document.getElementById("text");
-      var message = document.getElementById("message");
-      var socket;
 
-      status.textContent = "Not Connected";
-      url.value = "ws://localhost:9001";
-      close.disabled = true;
-      send.disabled = true;
+      URL = "ws://localhost:9001";
 
-      // Create a new connection when the Connect button is clicked
-      open.addEventListener("click", function(event) {
-        open.disabled = true;
-        socket = new WebSocket(url.value, "echo-protocol");
+      // create new socket on page load
+      socket = new WebSocket(URL, "echo-protocol");
 
-        socket.addEventListener("open", function(event) {
-          close.disabled = false;
-          send.disabled = false;
-          status.textContent = "Connected";
-        });
+      socket.addEventListener("open", function(event) {
+          console.log("Connected!");
+      });
 
-        // Display messages received from the server
-        socket.addEventListener("message", function(event) {
+      socket.addEventListener("message", function(event) {
           // messages received are in here!!
           try {
             var res = JSON.parse(event.data);
@@ -48,35 +45,15 @@
           } catch (e) {
             //console.log(e);
           }
-          message.innerHTML += 'Server Says: ' + event.data + '<br>';
-        });
-
-        // Display any errors that occur
-        socket.addEventListener("error", function(event) {
-          message.textContent = "Error: " + event;
-        });
-
-        socket.addEventListener("close", function(event) {
-          open.disabled = false;
-          status.textContent = "Not Connected";
-        });
+          console.log(event.data);
       });
 
-      // Close the connection when the Disconnect button is clicked
-      close.addEventListener("click", function(event) {
-        close.disabled = true;
-        send.disabled = true;
-        message.textContent = "";
-        socket.close();
-      });
-
-      // Send text to the server when the Send button is clicked
-      send.addEventListener("click", function(event) {
-        socket.send(JSON.stringify({"uuid": uuid, "name": text.value, "type": "set_info", "job": "ranger"}));
+      socket.addEventListener("close", function(event) {
+          console.log("Disconnected from the server!");
       });
     });
   </script>
-  
+
   <style type="text/css">
     @font-face {
       font-family: '8bit_wondernominal';
@@ -272,10 +249,10 @@
       <img id="dpad" src="img/dpad.png" alt="D-PAD" usemap="#dpadmap">
 
       <map name="dpadmap">
-        <area shape="rect" coords="53,0,95,50" href="javascript:alert()" alt="Up">
-        <area shape="rect" coords="53,95,95,150" href="javascript:alert()" alt="Down">
-        <area shape="rect" coords="0,53,53,90" href="javascript:alert()" alt="Left">
-        <area shape="rect" coords="95,53,150,90" href="javascript:alert()" alt="Right">
+        <area shape="rect" coords="53,0,95,50" href="javascript:direction('up')" alt="Up">
+        <area shape="rect" coords="53,95,95,150" href="javascript:direction('down')" alt="Down">
+        <area shape="rect" coords="0,53,53,90" href="javascript:direction('left')" alt="Left">
+        <area shape="rect" coords="95,53,150,90" href="javascript:direction('right')" alt="Right">
       </map>
 
       <div id="mainMiddle"></div>
@@ -318,6 +295,7 @@
           });
           $('#name_3').keyup(function(){
             if(validateName($( this ).val())){
+              set_name($('#name_1').val() + $('#name_2').val()+ $('#name_3').val());
               showMain();
             } else {
               $('#name_3').val('');

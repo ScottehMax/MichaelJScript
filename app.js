@@ -1,5 +1,6 @@
 
 var Global = require('./js/global.js')
+console.log(Global);
 var user = require('./js/user.js');
 var utils = require('./js/utils.js');
 
@@ -40,6 +41,7 @@ wsServer.on('request', function(request) {
 
     var connection = request.accept('echo-protocol', request.origin);
     var new_user = new user.User(connection);
+
     connection.sendUTF(JSON.stringify({'uuid': new_user.uuid}));
     connection.uuid = new_user.uuid;
     console.log("UUID assigned! Now they need to pick a name.");
@@ -54,8 +56,15 @@ wsServer.on('request', function(request) {
                 var cmd = JSON.parse(message.utf8Data);
                 console.log(cmd);
 
-                if (cmd.type === 'set_info') {
-                    Global.users[cmd.uuid].set_info(cmd.name, cmd.job);
+                switch (cmd.type) {
+                    case 'set_name':
+                        Global.users[cmd.uuid].set_name(cmd.name);
+                        break;
+                    case 'set_job':
+                        Global.users[cmd.uuid].set_job(cmd.job);
+                        break;
+                    case 'try_move':
+                        Global.users[cmd.uuid].move(cmd.direction);
                 }
 
                 // checks for json here

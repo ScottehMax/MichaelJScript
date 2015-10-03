@@ -12,16 +12,59 @@ function User(socket) {
     this.score = 0;
 }
 
-User.prototype.set_info = function (name, job) {
+User.prototype.set_name = function (name) {
     console.log("setting user with UUID " + this.uuid + " info")
     this.name = name;
     console.log("setting name to " + name);
-    this.job = job;
-    console.log("setting job to " + job);
 
     console.log(this);
 
     this.location = [utils.randint(0, 20), utils.randint(0, 20)];
+    Global.arena[this.location[0]][this.location[1]] = this.uuid;
+    console.log(Global.arena);
+}
+
+User.prototype.set_job = function(job) {
+    this.job = job;
+    console.log("setting user " + this.uuid + " to job " + this.job);
+}
+
+User.prototype.move = function (direction) {
+    switch (direction) {
+        case "up":
+            if (this.location[1] > 0) {
+                Global.arena[this.location[0]][this.location[1]] = false;
+                this.location[1] -= 1;
+                Global.arena[this.location[0]][this.location[1]] = this.uuid;
+                console.log("moving up");
+            }
+            break;
+        case "down":
+            if (this.location[1] < 19) {
+                Global.arena[this.location[0]][this.location[1]] = false;
+                this.location[1] += 1;
+                Global.arena[this.location[0]][this.location[1]] = this.uuid;
+                console.log("moving down");
+            }
+            break;
+        case "left":
+            if (this.location[0] > 0) {
+                Global.arena[this.location[0]][this.location[1]] = false;
+                this.location[1] -= 1;
+                Global.arena[this.location[0]][this.location[1]] = this.uuid;
+                console.log("moving left");
+            }
+            break;
+        case "right":
+            if (this.location[0] < 19) {
+                Global.arena[this.location[0]][this.location[1]] = false;
+                this.location[0] += 1;
+                Global.arena[this.location[0]][this.location[1]] = this.uuid;
+                console.log("moving right");
+            }
+            break;
+        console.log(this.location);
+    }
 }
 
 User.prototype.reset = function () {
