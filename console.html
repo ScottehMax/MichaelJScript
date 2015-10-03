@@ -8,6 +8,19 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 
     <style type="text/css">
+    
+        @font-face {
+            font-family: '8bit_wondernominal';
+            src: url('assets/8-bit_wonder-webfont.eot');
+            src: url('assets/8-bit_wonder-webfont.eot?#iefix') format('embedded-opentype'),
+                url('assets/8-bit_wonder-webfont.woff2') format('woff2'),
+                url('assets/8-bit_wonder-webfont.woff') format('woff'),
+                url('assets/8-bit_wonder-webfont.ttf') format('truetype'),
+                url('assets/8-bit_wonder-webfont.svg#8bit_wondernominal') format('svg');
+            font-weight: normal;
+            font-style: normal;
+    }
+    
         body { 
             font-size: 15px; 
             font-family :sans-serif;
@@ -28,33 +41,61 @@
         
         section {
             float: left;
-            width: 750px;
-            padding: 50px;
+            width: 70%;
+            position: absolute;
         }
             
         aside {
+            font-family: '8bit_wondernominal';
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #ffffff;
             float: right;
-            margin-left: 894px;
-            margin-right: 0 auto;
-            border: 2px solid;
-            position: fixed;
-            padding: 50px;
+            width: 300px;
+            height: 100%;
+            padding-left: 10px;
+            padding-right: 10px;
+            position: fixed, absolute;
         }
             
         #titleRow {
             float: top;
             height: 20px;
+            text-align: center;
             padding-left: 8px;
             padding-right: 8px;
-            padding-bottom: 3px;
+            padding-bottom: 13px;
+            border-bottom: 1px solid;
         }
         
-        #scoresRows {
+        #namesTable {
             float: top;
-            margin-top: 20px;
+            height: 100%;
+            font-size: 20px;
+            color: #ffffff;
             padding: 3px;
-            border-top: 1px solid;
-            
+        }
+        
+        .tableRow {
+            height: 40px;
+            width: 300px;
+            position: relative;
+        }
+
+        .left {
+            height: 40px;
+            width: 150px;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        .right {
+            height: 40px;
+            width: 150px;
+            position: absolute;
+            text-align: right;
+            top: 0;
+            right: 0;
         }
         
         #container {
@@ -72,6 +113,7 @@
             width: 750px;
             position: absolute;
         }
+        
         .sprite {
             height: 5%;
             width: 5%;
@@ -107,11 +149,10 @@
                 <h1>High scores</h1>
             </div>
             
-            <div id="scoresRows">
-                <ul>
-                    <li>#1: 9001</il>
-                </ul>
+            <div id="namesTable">
+
             </div>
+            
         </aside>
     
     <script type="text/javascript">
@@ -121,6 +162,14 @@
         var sprite = 1;
         $("#canvas").append('<div sprite="1" dir="down" id="sprite'+c+'"class="sprite" style="top: '+(c*5)+'%; left: '+(c*5)+'%; background-image: url(\'assets/sprites/'+sprite+'/down_still_noattack_'+sprite+'.png\')"></div>');
         c++;
+    }
+    
+    function updateBoard(){
+        var scoreArray = [["abcdef", "9001"], ["catcat", "8999"], ["tabtab", "538"]]
+
+        for (var i=0; i < scoreArray.length; i++) {
+            $('#namesTable').append('<div class="tableRow"><div class="left">'+ scoreArray[i][0] +'</div><div class="right">'+ scoreArray[i][1] +'</div></div>')
+        }       
     }
 
     function moveUp(spriteId){
@@ -191,80 +240,9 @@
             },150);
         },150);
     }
+    
+    window.onload( updateBoard() );
     </script>
-
-
-
-    <!--
-    <h1>
-        Michael J. Script
-    </h1>
-    
-    <a href="#" onclick="draw_map();return false">Click to draw background</a>
-    
-    <h3>
-        Test (canvas not visible until this is here)
-    </h3>
-
-    <div id="topFence" style="position:relative;" height="32px" width="750px" >
-        <img src="assets/fence_ns.png" height="32px" width="750px"></img>
-    </div>
-    
-    <canvas id="rootCanvas"></canvas>
-    
-    <div id="bottomFence" style="position:relative;" height="32px" width="750px" >
-        <img src="assets/fence_ns.png" height="32px" width="750px"></img>
-    </div>
-    
-    <script type="text/javascript">
-        var heightVar = "750";
-        var widthVar = "750";
-        
-        var rC_canvas = document.getElementById("rootCanvas");
-        var rC_context = rC_canvas.getContext("2d");
-        
-        rC_canvas.style.height = heightVar;
-        rC_canvas.style.width = widthVar;
-        rC_canvas.height = heightVar;
-        rC_canvas.width = widthVar;
-        
-        var backgroundImage = new Image();
-        backgroundImage.src = "assets/mapbackground.png"
-        backgroundImage.onload = function() {
-                rC_context.drawImage(backgroundImage, 0, 0);
-        }
-        
-        /**
-        var fence_ewImage = new Image();
-        fence_ewImage.src = "assets/fence_ew.png"
-        fence_ewImage.onload = function() {
-                    rC_context.drawImage(fence_ewImage, 0, 0.5);
-                    rC_context.drawImage(fence_ewImage, widthVar-32, 0.5);
-        }
-        **/
-        
-            
-        function draw_map() {            
-            
-            for (var x = 0.5; x < widthVar; x += widthVar*0.05) {
-                rC_context.moveTo(x, 0);
-                rC_context.lineTo(x, widthVar);
-            }
-            
-            for (var y = 0.5; y < heightVar; y += heightVar*0.05) {
-                rC_context.moveTo(0, y);
-                rC_context.lineTo(heightVar, y);
-            }
-            
-            rC_context.strokeStyle = "#000";
-            rC_context.stroke();
-            
-            //rootCanvas_context.fillRect(0, 0, 32, 32);
-        }
-        
-    </script>
-    -->
-
 
 </body>
 
