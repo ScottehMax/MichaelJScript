@@ -199,9 +199,10 @@
         spriteEle.remove();
     }
     
-    function updateBoard(){
-        var scoreArray = [["abcdef", "9001"], ["catcat", "8999"], ["tabtab", "538"]]
+    function updateBoard(scoreArray){
+        //var scoreArray = [["abcdef", "9001"], ["catcat", "8999"], ["tabtab", "538"]]
 
+        $('#namesTable').html('');
         for (var i=0; i < scoreArray.length; i++) {
             $('#namesTable').append('<div class="tableRow"><div class="left">'+ scoreArray[i][0] +'</div><div class="right">'+ scoreArray[i][1] +'</div></div>')
         }       
@@ -298,7 +299,7 @@
     }
     
     window.onload = function() {
-        updateBoard();
+        updateBoard([]);
 
         var uuid = false;
         var auth = false;
@@ -358,6 +359,10 @@
 
             if (res.type && res.type == "delete") {
                 deleteUser(res.uuid);
+            }
+
+            if (res.type && res.type == "leaderboard") {
+                updateBoard(res.leaderboard);
             }
 
           } catch (e) {

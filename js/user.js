@@ -115,6 +115,7 @@ User.prototype.set_leaderboard = function () {
     Global.leaderboard.push([this.name, this.score]);
     Global.leaderboard.sort(function(a, b){ return b[1]-a[1]; });
     Global.leaderboard = Global.leaderboard.slice(0, 10);
+    utils.sendConsole(JSON.stringify({"type": "leaderboard", "leaderboard": Global.leaderboard}));
 }
 
 User.prototype.destroy = function () {

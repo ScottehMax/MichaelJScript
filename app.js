@@ -111,14 +111,14 @@ wsServer.on('request', function(request) {
                                 var victim = Global.users[Global.arena[attackingUser.location[0]][attackingUser.location[1] + 1]];
                                 break;
                             case "left":
-                                if (Global.users[Global.arena[attackingUser.location[0] - 1]]) {
+                                //if (Global.users[Global.arena[attackingUser.location[0] - 1]]) {
                                     var victim = Global.users[Global.arena[attackingUser.location[0] - 1][attackingUser.location[1]]];
-                                }
+                                //}
                                 break;
                             case "right":
-                                if (Global.users[Global.arena[attackingUser.location[0] + 1]]) {
+                                //if (Global.users[Global.arena[attackingUser.location[0] + 1]]) {
                                     var victim = Global.users[Global.arena[attackingUser.location[0] + 1][attackingUser.location[1]]];
-                                }
+                                //}
                                 break;
                         }
                     } catch (e) {
