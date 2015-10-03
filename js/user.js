@@ -13,8 +13,11 @@ function User(socket) {
 }
 
 User.prototype.set_info = function (name, job) {
+    console.log("setting user with UUID " + this.uuid + " info")
     this.name = name;
+    console.log("setting name to " + name);
     this.job = job;
+    console.log("setting job to " + job);
 
     this.location = [utils.randint(0, 20), utils.randint(0, 20)];
 }

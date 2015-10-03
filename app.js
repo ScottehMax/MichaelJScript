@@ -40,20 +40,27 @@ wsServer.on('request', function(request) {
 
     var connection = request.accept('echo-protocol', request.origin);
     var new_user = new user.User(connection);
-    console.log(new_user);
+    connection.sendUTF(JSON.stringify({'uuid': new_user.uuid}));
+    console.log("UUID assigned! Now they need to pick a name.");
 
-    console.log(Global.users);
+    //console.log(Global.users);
 
     console.log((new Date()) + ' Connection accepted.');
+
     connection.on('message', function(message) {
         if (message.type === 'utf8') {
             try {
-                var jsonresp = JSON.parse(message.utf8Data);
-                console.log(jsonresp);  
+                var cmd = JSON.parse(message.utf8Data);
+                console.log(cmd);
+
+                if (cmd.type === 'set_info') {
+                    Global.users[cmd.uuid].set_info(cmd.name, cmd.job);
+                }
+                
+                // checks for json here
             } catch (e) {
-                console.log(e);
-                console.log('buggered up lad');
-                connection.sendUTF('lol you suck');
+                console.log("YOU BUGGERED IT: " + e);
+                connection.sendUTF('Error: invalid JSON');
             }
             console.log('Received Message: ' + message.utf8Data);
             connection.sendUTF(message.utf8Data + ' received!');
