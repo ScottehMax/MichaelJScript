@@ -19,7 +19,9 @@
                 url('assets/8-bit_wonder-webfont.svg#8bit_wondernominal') format('svg');
             font-weight: normal;
             font-style: normal;
-    }
+        }
+    
+        div#preload { display: none; }
     
         body { 
             font-size: 15px; 
@@ -162,6 +164,29 @@
     
     <script type="text/javascript">
     var c = 0;
+    
+    jArray = ["down", "left", "right", "up"];
+    kArray = ["llmove", "rlmove", "still"];
+    lArray = ["attack1", "attack2", "noattack"]
+    for (var i = 0; i <= 9; i ++){
+        console.log(i);
+        for (var j = 0; j < jArray.length; j++) {
+            for (var k = 0; k < kArray.length; k++) {
+                for (var l = 0; l < lArray.length; l++) {
+                    $("#preload").append("<img src=\"assets/sprites/"+i+"/"+jArray[j]+"_"+kArray[k]+"_"+lArray[l]+"_"+i+".png\" width=\"1\" height=\"1\" alt=\"Image\"/>");
+                }
+            }
+        }
+        //$("#preload").append('<img src=assets/sprites/"'++'" width="1" height="1" alt="Image"/>');
+        
+        //+i+'/'+spriteDir+'_still_attack1_'+sprite+'.png)';
+        
+        //down_llmove_noattack_5
+        
+        //i+"/"+jArray[j]+"_"+kArray[k]+"_"+lArray[l]+"_"+i+".png";
+        //+sprite+'/'+spriteDir+'_still_attack2_'+sprite+'.png)';
+        //+sprite+'/'+spriteDir+'_still_noattack_'+sprite+'.png)';
+    }
 
     function newUser(){
         var sprite = 1;
@@ -269,6 +294,9 @@
     
     window.onload( updateBoard() );
     </script>
+    
+    <div id="preload">
+    </div>
 
 </body>
 
