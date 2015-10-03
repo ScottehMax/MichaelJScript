@@ -17,20 +17,22 @@
         
         section {
             float: left;
-            width: 750px;
-            position: absolute;
+            width: 750px;;
         }
             
         aside {
-            float: left;
-            margin-left: 800px;
-            position: relative;
+            float: right;
+            margin-left: 832px;
+            margin-right: 0 auto;
             border: 2px solid;
+            position: fixed;
         }
             
         #titleRow {
             float: top;
             height: 20px;
+            padding-left: 8px;
+            padding-right: 8px;
             padding-bottom: 3px;
         }
         
@@ -41,8 +43,46 @@
             border-top: 1px solid;
             
         }
+        
+        #container {
+            position: absolute;
+        }
+        
+        #topFence {
+            float:top;
+            margin-left: 32px;
+            height: 32px;
+            width: 750px;
+            position: relative;
+        }
+        
+        #bottomFence {
+            float:top;
+            margin-left: 32px;
+            margin-top: 1px;
+            height: 32px;
+            width: 750px;
+            position: relative;
+        }
+        
+        #leftFence {
+            float:left;
+            height: 750px;
+            width: 32px;
+            position: relative;
+        }
+        
+        #rightFence {
+            float: top;
+            margin-left: 782px;
+            margin-top: -750px;
+            height: 750px;
+            width: 32px;
+            position: relative;
+        }
 
         #canvas {
+            margin-left: 32px;
             height: 750px;
             width: 750px;
             background-image: url('assets/mapbackground.png');
@@ -65,14 +105,35 @@
 <body>
     
         <section id= "canvasWrapper">
+        
+        <div id="container">
+        
+            <div id="topFence">
+                <img src="assets/fence_ns.png" height="32px" width="750px"></img>
+            </div>
+            
+            <div id="leftFence">
+                <img src="assets/fence_ew.png" height="750px" width="32px"></img>
+            </div>
+            
             <div id="canvas"></div>
-
+            
+            <div id="rightFence">
+                <img src="assets/fence_ew.png" height="750px" width="32px"></img>
+            </div>
+            
+            <div id="bottomFence">
+                <img src="assets/fence_ns.png" height="32px" width="750px"></img>
+            </div>
+            
             <button onclick="newUser()">new</button>
             <button title="up" onclick="moveUp('0')">up</button>
             <button title="down" onclick="moveDown('0')">down</button>
             <button title="left" onclick="moveLeft('0')">left</button>
             <button title="right" onclick="moveRight('0')">right</button>
-    
+            
+        </div>
+            
         </section>
     
         <aside id="scoreboard">
