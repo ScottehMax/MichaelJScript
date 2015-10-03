@@ -1,3 +1,5 @@
+var Global = require('./global.js')
+
 exports.randint = function (a, b) {
     return Math.floor(Math.random() * b) + a; 
 }
@@ -11,4 +13,10 @@ exports.uuid = function () {
 
 exports.datelog = function (s) {
     console.log((new Date()) + ' ' + s);
+}
+
+exports.sendConsole = function (s) {
+    if (!Global.console) return false;
+    Global.console.sendUTF(s);
+    console.log("sending " + s + " to console");
 }

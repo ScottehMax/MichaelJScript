@@ -441,6 +441,7 @@
     function hideDeath(){
       $('#death').fadeOut(300).delay(0.3).css('top', 0);
       getInfo(uuid);
+      socket.send(JSON.stringify({"type": "respawn", "uuid": uuid}));
     }
   </script>
 </body>

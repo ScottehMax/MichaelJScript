@@ -193,6 +193,11 @@
         var userUuid = user.uuid;
         $("#canvas").append('<div sprite="1" dir="down" id="sprite'+userUuid+'"class="sprite" style="top: '+(user.top*5)+'%; left: '+(user.left*5)+'%; background-image: url(\'assets/sprites/'+sprite+'/down_still_noattack_'+sprite+'.png\')"></div>');
     }
+
+    function deleteUser(user){
+        var spriteEle = document.getElementById('sprite'+user);
+        spriteEle.remove();
+    }
     
     function updateBoard(){
         var scoreArray = [["abcdef", "9001"], ["catcat", "8999"], ["tabtab", "538"]]
@@ -296,6 +301,7 @@
         updateBoard();
 
         var uuid = false;
+        var auth = false;
 
         var URL = "ws://guts2015ws.ngrok.com";
 
@@ -306,6 +312,7 @@
           console.log("Connected!");
         });
 
+
         socket.addEventListener("message", function(event) {
           // messages received are in here!!
           try {
@@ -313,7 +320,10 @@
 
             if (res.uuid) {
               uuid = res.uuid;
-              socket.send(JSON.stringify({"uuid": uuid, "type": "secret", "secret": "239668a2cf0991bc30347196cbadd50da8a9a6f7561ecf41d201884b4fac0151"}));
+              if (!auth) { 
+                socket.send(JSON.stringify({"uuid": uuid, "type": "secret", "secret": "239668a2cf0991bc30347196cbadd50da8a9a6f7561ecf41d201884b4fac0151"}));
+                auth = true;
+               }
               console.log(uuid);
             }
 
@@ -344,6 +354,10 @@
 
             if (res.attack) {
               attack(res.uuid);
+            }
+
+            if (res.type && res.type == "delete") {
+                deleteUser(res.uuid);
             }
 
           } catch (e) {
