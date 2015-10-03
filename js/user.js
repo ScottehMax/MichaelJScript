@@ -11,6 +11,7 @@ function User(socket) {
     this.health = 3;
     this.score = 0;
     this.sprite = 0;
+    this.direction = "down";
 }
 
 User.prototype.set_sprite = function(num) {
@@ -43,6 +44,7 @@ User.prototype.set_location = function () {
 }
 
 User.prototype.move = function (direction) {
+  this.direction = direction;
     switch (direction) {
         case "up":
             if (this.location[1] > 0) {
@@ -108,6 +110,7 @@ User.prototype.set_leaderboard = function () {
 }
 
 User.prototype.destroy = function () {
+    if(this.name) this.set_leaderboard();
     delete Global.users[this.uuid];
     console.log(this.uuid + " destroyed.");
 }

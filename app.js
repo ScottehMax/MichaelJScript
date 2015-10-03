@@ -74,6 +74,44 @@ wsServer.on('request', function(request) {
                         break;
                     case 'try_move':
                         Global.users[cmd.uuid].move(cmd.direction);
+                        break;
+                    case 'attack':
+                        var attackingUser = Global.users[cmd.uuid];
+                        switch (attackingUser.direction) {
+                            case "up":
+                                if (this.location[1] > 0) {
+                                    var victim = Global.users[Global.arena[this.location[0]][this.location[1] - 1]];
+                                }
+                                break;
+                            case "down":
+                                if (this.location[1] < 19) {
+                                    var victim = Global.users[Global.arena[this.location[0]][this.location[1] + 1]];
+                                }
+                                break;
+                            case "left":
+                                if (this.location[0] > 0) {
+                                    var victim = Global.users[Global.arena[this.location[0] - 1][this.location[1]]];
+                                }
+                                break;
+                            case "right":
+                                if (this.location[0] < 19) {
+                                    var victim = Global.users[Global.arena[this.location[0] + 1][this.location[1]]];
+                                }
+                                break;
+                                
+                            if (victim) {
+                                // Victim's health goes down
+                                victim.health--;
+                                // If health is zero, then send death and update user's score, otherwise send new health
+                                if (victim.health <= 0) {
+                                    //Send death here
+                                    victim.reset();
+                                    attackingUser.score += 100;
+                                } else {
+                                    // Send new health
+                                }
+                            }
+                        }
                 }
 
                 // checks for json here
