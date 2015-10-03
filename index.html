@@ -19,6 +19,7 @@
     }
     // Initialize everything when the window finishes loading
     var uuid;
+    var username;
     var socket;
 
     function direction(dir) {
@@ -31,11 +32,19 @@
         }
     }
     
+    function pad(num, size) {
+      var s = num+"";
+      while (s.length < size) s = "0" + s;
+      return s;
+  }
+
     function set_sprite(sprite) {
         socket.send(JSON.stringify({"uuid": uuid, "type": "set_sprite", "sprite": sprite}));
     }
 
     function set_name(name) {
+        username = name;
+        $('#username').text(" " + username + " ")
         socket.send(JSON.stringify({"uuid": uuid, "type": "set_name", "name": name}));
     }
 
@@ -109,7 +118,7 @@
             }
 
             if (res.score || typeof(res.score) === "number") {
-              $('#score').text(' ' + res.score + ' ');
+              $('#score').text(' ' + pad(res.score, 4) + ' ');
             }
 
             if (res.health || typeof(res.health) !== "boolean") {
@@ -342,8 +351,11 @@
         <img src="img/heart.png">
         <img src="img/heart.png">
       </div>
+      <div style="text-align: center;top: 80px;position: relative;" id="username"></div>
+      <div id="spriteview" style="margin: 25px auto; height: 55px; width: 55px; background-size: cover;text-align: center;top: 80px;position: relative;">
+     </div>
       <div id="score">
-        0
+        0000
       </div>
     </div>
     <div id="mainCont">
@@ -373,6 +385,7 @@
 
 
   <script type="text/javascript">
+  var sprite_id;
   var deathtimeout = false;
     $(function() {
       FastClick.attach(document.body);
@@ -397,7 +410,9 @@
         return /[A-Z0-9]{1}/ig.test(strIn) && strIn.length == 1;
       }
 
-      set_sprite(spriteID.slice(-1));
+      sprite_id = spriteID.slice(-1);
+      set_sprite(sprite_id);
+      $('#spriteview').css('background-image', 'url(assets/sprites/' + sprite_id + '/down_still_noattack_' + sprite_id + '.png)');
       
       $('#welcome_step1').fadeOut(300).delay(0.3).css('height',0);
       setTimeout(function(){
