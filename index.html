@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="mobile-web-app-capable" content="yes">
   <title>HackSlash - Controller</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
   <script>
     "use strict";
@@ -63,7 +62,8 @@
 
 
       if(window.innerHeight > window.innerWidth){
-        alert("Please use Landscape!");
+        //alert("Please use Landscape!");
+        screen.orientation.lock('landscape');
       }
 
       window.scrollTo(0,1) 
@@ -252,6 +252,7 @@
       height: 15%;
       width: 25%;
     }
+
   </style>
 </head>
 <body>
@@ -316,7 +317,7 @@
       <span class="headerText"><span class="headerTextCap">G</span>ame <span class="headerTextCap">O</span>ver!</span>
       <div id="deathScoreTitle">You Scored:</div>
       <span id="deathScore">0</span>
-      <div class="headerText" ><img id="tryAgain" src="img/respawnbutton2.png"></div>
+      <div class="headerText" ><img id="tryAgain" onclick="javascript:hideDeath()" src="img/respawnbutton2.png"></div>
     </div>
   </div>
 
