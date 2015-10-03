@@ -15,6 +15,12 @@
 
     function direction(dir) {
         socket.send(JSON.stringify({"uuid": uuid, "type": "try_move", "direction": dir}));
+        
+        //Put in sound here too
+        navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
+        if (navigator.vibrate) { //if ("vibrate" in navigator) {}
+            navigator.vibrate(50);
+        }
     }
 
     function set_name(name) {
