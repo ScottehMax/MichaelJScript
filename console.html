@@ -378,6 +378,14 @@
                   }
                 }
 
+                if (res.turn) {
+                  var spriteEle = document.getElementById('sprite'+res.uuid);
+                  var sprite = spriteEle.getAttribute('sprite');
+                  spriteEle.setAttribute('dir', res.turn);
+
+                  spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/'+res.turn+'_still_noattack_'+sprite+'.png)';
+                }
+
                 if (res.attack) {
                   attack(res.uuid);
                 }

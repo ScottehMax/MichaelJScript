@@ -46,6 +46,7 @@ User.prototype.set_location = function () {
 
 User.prototype.move = function (direction) {
   this.direction = direction;
+  var didMove = false;
     switch (direction) {
         case "up":
             if (this.location[1] > 0) {
@@ -55,6 +56,7 @@ User.prototype.move = function (direction) {
                     Global.arena[this.location[0]][this.location[1]] = this.uuid;
                     console.log("moving up");
                     utils.sendConsole(JSON.stringify({"uuid":this.uuid, "move":direction}));
+                    didMove = true;
                 }
             }
             break;
@@ -66,6 +68,7 @@ User.prototype.move = function (direction) {
                     Global.arena[this.location[0]][this.location[1]] = this.uuid;
                     console.log("moving down");
                     utils.sendConsole(JSON.stringify({"uuid":this.uuid, "move":direction}));
+                    didMove = true;
                 }
             }
             break;
@@ -77,6 +80,7 @@ User.prototype.move = function (direction) {
                     Global.arena[this.location[0]][this.location[1]] = this.uuid;
                     console.log("moving left");
                     utils.sendConsole(JSON.stringify({"uuid":this.uuid, "move":direction}));
+                    didMove = true;
                 }
             }
             break;
@@ -88,10 +92,14 @@ User.prototype.move = function (direction) {
                     Global.arena[this.location[0]][this.location[1]] = this.uuid;
                     console.log("moving right");
                     utils.sendConsole(JSON.stringify({"uuid":this.uuid, "move":direction}));
+                    didMove = true;
                 }
             }
             break;
         }
+
+    if(!didMove) utils.sendConsole(JSON.stringify({"uuid":this.uuid, "turn":direction}));
+
     console.log(this.location);
 
 }
