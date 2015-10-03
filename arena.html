@@ -6,6 +6,8 @@
   <script>
     "use strict";
     // Initialize everything when the window finishes loading
+    var uuid;
+
     window.addEventListener("load", function(event) {
       var status = document.getElementById("status");
       var url = document.getElementById("url");
@@ -34,6 +36,17 @@
 
         // Display messages received from the server
         socket.addEventListener("message", function(event) {
+          // messages received are in here!!
+          try {
+            var res = JSON.parse(event.data);
+
+            if (res.uuid) {
+              uuid = res.uuid;
+              console.log(uuid);
+            }
+          } catch (e) {
+            //console.log(e);
+          }
           message.innerHTML += 'Server Says: ' + event.data + '<br>';
         });
 
@@ -58,7 +71,7 @@
 
       // Send text to the server when the Send button is clicked
       send.addEventListener("click", function(event) {
-        socket.send(text.value);
+        socket.send(JSON.stringify({"uuid": uuid, "name": text.value, "type": "set_info", "job": "ranger"}));
       });
     });
   </script>

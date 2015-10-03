@@ -41,6 +41,7 @@ wsServer.on('request', function(request) {
     var connection = request.accept('echo-protocol', request.origin);
     var new_user = new user.User(connection);
     connection.sendUTF(JSON.stringify({'uuid': new_user.uuid}));
+    connection.uuid = new_user.uuid;
     console.log("UUID assigned! Now they need to pick a name.");
 
     //console.log(Global.users);
@@ -56,7 +57,7 @@ wsServer.on('request', function(request) {
                 if (cmd.type === 'set_info') {
                     Global.users[cmd.uuid].set_info(cmd.name, cmd.job);
                 }
-                
+
                 // checks for json here
             } catch (e) {
                 console.log("YOU BUGGERED IT: " + e);
@@ -72,5 +73,6 @@ wsServer.on('request', function(request) {
     });
     connection.on('close', function(reasonCode, description) {
         console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
+        Global.users[connection.uuid].destroy();
     });
 });
