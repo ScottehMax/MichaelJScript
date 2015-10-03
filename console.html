@@ -13,8 +13,7 @@
             font-weight: bold; }
         h2 { font-size: 20px;
             font-weight: bold; }
-        canvas { border: 1px dotted;
-                 float: left; }
+        canvas { position:absolute; }
     </style>
 
 </head>
@@ -25,13 +24,21 @@
         Michael J. Script
     </h1>
     
-    <a href="#" onclick="draw_background();return false">Click to draw background</a>
+    <a href="#" onclick="draw_map();return false">Click to draw background</a>
     
     <h3>
         Test (canvas not visible until this is here)
     </h3>
 
+    <div id="topFence" style="position:relative;" height="32px" width="750px" >
+        <img src="assets/fence_ns.png" height="32px" width="750px"></img>
+    </div>
+    
     <canvas id="rootCanvas"></canvas>
+    
+    <div id="bottomFence" style="position:relative;" height="32px" width="750px" >
+        <img src="assets/fence_ns.png" height="32px" width="750px"></img>
+    </div>
     
     <script type="text/javascript">
         var heightVar = "750";
@@ -48,12 +55,20 @@
         var backgroundImage = new Image();
         backgroundImage.src = "assets/mapbackground.png"
         backgroundImage.onload = function() {
-            //for (var x = 0, y = 0; x < widthVar && y < heightVar; x += widthVar*0.05, y += heightVar*0.05) {
                 rC_context.drawImage(backgroundImage, 0, 0);
-            //}
         }
+        
+        /**
+        var fence_ewImage = new Image();
+        fence_ewImage.src = "assets/fence_ew.png"
+        fence_ewImage.onload = function() {
+                    rC_context.drawImage(fence_ewImage, 0, 0.5);
+                    rC_context.drawImage(fence_ewImage, widthVar-32, 0.5);
+        }
+        **/
+        
             
-        function draw_background() {            
+        function draw_map() {            
             
             for (var x = 0.5; x < widthVar; x += widthVar*0.05) {
                 rC_context.moveTo(x, 0);
