@@ -12,25 +12,25 @@ function User(socket) {
     this.score = 0;
 }
 
-User.prototype.set_info = function (name, class) {
+User.prototype.set_info = function (name, job) {
     this.name = name;
-    this.class = class;
+    this.job = job;
 
     this.location = [utils.randint(0, 20), utils.randint(0, 20)];
 }
 
 User.prototype.reset = function () {
     // R.I.P.
-    Global.leaderboard.push([this.name, this.score]);
-    Global.leaderboard.sort(function(a, b){ return b[1]-a[1]; });
-    Global.leaderboard = Global.leaderboard.slice(0, 10);
+    this.set_leaderboard();
 
     this.health = 4;
     this.score = 0;
 }
 
-User.prototype.leaderboard = function () {
-    // TODO
+User.prototype.set_leaderboard = function () {
+    Global.leaderboard.push([this.name, this.score]);
+    Global.leaderboard.sort(function(a, b){ return b[1]-a[1]; });
+    Global.leaderboard = Global.leaderboard.slice(0, 10);
 }
 
 exports.User = User;
