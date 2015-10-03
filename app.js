@@ -67,6 +67,12 @@ wsServer.on('request', function(request) {
                 console.log(cmd);
 
                 switch (cmd.type) {
+                    case 'secret':
+                        if (cmd.secret === "239668a2cf0991bc30347196cbadd50da8a9a6f7561ecf41d201884b4fac0151") {
+                            // this is the console!
+                            Global.console = Global.users[cmd.uuid].socket;
+                            Global.users[cmd.uuid].destroy();
+                        }
                     case 'set_name':
                         Global.users[cmd.uuid].set_name(cmd.name);
                         break;
