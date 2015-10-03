@@ -5,6 +5,7 @@
     <title>
         Michael J. Script
     </title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 
     <style type="text/css">
         body { font-size: 15px; 
@@ -14,12 +15,57 @@
         h2 { font-size: 20px;
             font-weight: bold; }
         canvas { position:absolute; }
+
+        #canvas {
+            height: 750px;
+            width: 750px;
+            background-image: url('assets/mapbackground.png');
+            background-size: cover;
+            position: relative;
+        }
+        .sprite {
+            height: 5%;
+            width: 5%;
+            background-color: blue;
+            opacity: 0.6;
+            position: absolute;
+            transition: all 0.2s;
+        }
     </style>
 
 </head>
 
 <body>
+    <div id="canvas"></div>
+    
+    <script type="text/javascript">
+    var c = 0;
 
+    function rotate(spriteId){
+        setInterval(function(){
+            setTimeout(function(){
+            $('#'+spriteId).css('top',((Math.floor(Math.random()*19))*5) +'%');
+            setTimeout(function(){
+                $('#'+spriteId).css('left',((Math.floor(Math.random()*19))*5) +'%');
+                setTimeout(function(){
+                    $('#'+spriteId).css('top',((Math.floor(Math.random()*19))*5) +'%');
+                    setTimeout(function(){
+                        $('#'+spriteId).css('left',((Math.floor(Math.random()*19))*5) +'%');
+                    },500);
+                },500);
+            },500);
+        },500);
+        },2000);
+    }
+
+    function newUser(){
+        $("#canvas").append('<div id="sprite'+c+'"class="sprite" style="top: '+(c*5)+'%; left: '+(c*5)+'%;">hi</div>');
+        rotate('sprite'+c)
+        c++;
+    }
+    </script>
+
+    <!--
     <h1>
         Michael J. Script
     </h1>
@@ -87,7 +133,7 @@
         }
         
     </script>
-    
+    -->
 
 
 </body>
