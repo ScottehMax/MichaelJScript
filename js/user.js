@@ -10,6 +10,11 @@ function User(socket) {
 
     this.health = 3;
     this.score = 0;
+    this.sprite = 0;
+}
+
+User.prototype.set_sprite = function(num) {
+    this.sprite = num;
 }
 
 User.prototype.set_name = function (name) {
