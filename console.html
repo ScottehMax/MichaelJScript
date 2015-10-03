@@ -130,251 +130,276 @@
 
 <body>
     
-        <section id= "canvasWrapper">
-        
-        <div id="container">
-            
-            <div id="canvas"></div>
-            
-            <button onclick="newUser()">new</button>
-            <button title="up" onclick="moveUp('0')">up</button>
-            <button title="down" onclick="moveDown('0')">down</button>
-            <button title="left" onclick="moveLeft('0')">left</button>
-            <button title="right" onclick="moveRight('0')">right</button>
-            <button title="attack" onclick="attack('0')">attack</button>
-            
-            <audio id="audioTrack" preload="auto" oncanplaythrough="this.play();">
-                <source src="audio/bg.mp3" type="audio/mpeg">
-            </audio>
-            
-        </div>
-            
-        </section>
+    <section id= "canvasWrapper">
     
-        <aside id="scoreboard">
-            <div id="titleRow">
-                <h1>High scores</h1>
-            </div>
-            
-            <div id="namesTable">
+    <div id="container">
+        
+        <div id="canvas"></div>
+        
+        <audio id="audioTrack" preload="auto" oncanplaythrough="this.play();">
+            <source src="audio/bg.mp3" type="audio/mpeg">
+        </audio>
+        
+    </div>
+        
+    </section>
 
-            </div>
-            
-        </aside>
+    <aside id="scoreboard">
+        <div id="titleRow">
+            <h1>High scores</h1>
+        </div>
+        
+        <div id="namesTable"></div>
+        
+    </aside>
     
     <script type="text/javascript">
-    var c = 0;
-    
-    jArray = ["down", "left", "right", "up"];
-    kArray = ["llmove", "rlmove", "still"];
-    lArray = ["attack1", "attack2", "noattack"]
-    for (var i = 0; i <= 9; i ++){
-        console.log(i);
-        for (var j = 0; j < jArray.length; j++) {
-            for (var k = 0; k < kArray.length; k++) {
-                for (var l = 0; l < lArray.length; l++) {
-                    $("#preload").append("<img src=\"assets/sprites/"+i+"/"+jArray[j]+"_"+kArray[k]+"_"+lArray[l]+"_"+i+".png\" width=\"1\" height=\"1\" alt=\"Image\"/>");
+        var c = 0;
+
+        function newUser(user){
+            var sprite = user.sprite;
+            var userUuid = user.uuid;
+            $("#canvas").append('<div sprite="1" dir="down" id="sprite'+userUuid+'"class="sprite" style="top: '+(user.top*5)+'%; left: '+(user.left*5)+'%; background-image: url(\'assets/sprites/'+sprite+'/down_still_noattack_'+sprite+'.png\')"></div>');
+        }
+
+        function deleteUser(user){
+            var spriteEle = document.getElementById('sprite'+user);
+            spriteEle.remove();
+        }
+        
+        function updateBoard(scoreArray){
+            //var scoreArray = [["abcdef", "9001"], ["catcat", "8999"], ["tabtab", "538"]]
+
+            $('#namesTable').html('');
+            for (var i=0; i < scoreArray.length; i++) {
+                $('#namesTable').append('<div class="tableRow"><div class="left">'+ scoreArray[i][0] +'</div><div class="right">'+ scoreArray[i][1] +'</div></div>')
+            }       
+        }
+
+        function moveUp(spriteId){
+            var spriteEle = document.getElementById('sprite'+spriteId);
+            var sprite = spriteEle.getAttribute('sprite');
+            spriteEle.setAttribute('dir', 'up');
+
+            spriteEle.style.top = (parseInt(spriteEle.style.top.substring(0, spriteEle.style.top.length - 1)) - 5) + '%';
+            spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/up_llmove_noattack_'+sprite+'.png)';
+            
+            setTimeout(function(){
+                spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/up_still_noattack_'+sprite+'.png)';
+                setTimeout(function(){
+                    spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/up_rlmove_noattack_'+sprite+'.png)';
+                    setTimeout(function(){
+                        spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/up_still_noattack_'+sprite+'.png)';
+                    },150);
+                },150);
+            },150);
+        }
+
+        function moveDown(spriteId){
+            var spriteEle = document.getElementById('sprite'+spriteId);
+            var sprite = spriteEle.getAttribute('sprite');
+            spriteEle.setAttribute('dir', 'down');
+
+            spriteEle.style.top = (parseInt(spriteEle.style.top.substring(0, spriteEle.style.top.length - 1)) + 5) + '%';
+            spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/down_llmove_noattack_'+sprite+'.png)';
+            setTimeout(function(){
+                spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/down_still_noattack_'+sprite+'.png)';
+                setTimeout(function(){
+                    spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/down_rlmove_noattack_'+sprite+'.png)';
+                    setTimeout(function(){
+                        spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/down_still_noattack_'+sprite+'.png)';
+                    },150);
+                },150);
+            },150);
+        }
+
+        function moveLeft(spriteId){
+            var spriteEle = document.getElementById('sprite'+spriteId);
+            var sprite = spriteEle.getAttribute('sprite');
+            spriteEle.setAttribute('dir', 'left');
+
+            spriteEle.style.left = (parseInt(spriteEle.style.left.substring(0, spriteEle.style.left.length - 1)) - 5) + '%';
+            spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/left_llmove_noattack_'+sprite+'.png)';
+            setTimeout(function(){
+                spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/left_still_noattack_'+sprite+'.png)';
+                setTimeout(function(){
+                    spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/left_rlmove_noattack_'+sprite+'.png)';
+                    setTimeout(function(){
+                        spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/left_still_noattack_'+sprite+'.png)';
+                    },150);
+                },150);
+            },150);
+        }
+
+        function moveRight(spriteId){
+            var spriteEle = document.getElementById('sprite'+spriteId);
+            var sprite = spriteEle.getAttribute('sprite');
+            spriteEle.setAttribute('dir', 'right');
+
+            spriteEle.style.left = (parseInt(spriteEle.style.left.substring(0, spriteEle.style.left.length - 1)) + 5) + '%';
+            spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/right_llmove_noattack_'+sprite+'.png)';
+            setTimeout(function(){
+                spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/right_still_noattack_'+sprite+'.png)';
+                setTimeout(function(){
+                    spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/right_rlmove_noattack_'+sprite+'.png)';
+                    setTimeout(function(){
+                        spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/right_still_noattack_'+sprite+'.png)';
+                    },150);
+                },150);
+            },150);
+        }
+        
+        function attack(spriteId){
+            var spriteEle = document.getElementById('sprite'+spriteId);
+            var sprite = spriteEle.getAttribute('sprite');
+            var spriteDir = spriteEle.getAttribute('dir');
+            
+            spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/'+spriteDir+'_still_attack1_'+sprite+'.png)';
+            setTimeout(function(){
+                spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/'+spriteDir+'_still_attack2_'+sprite+'.png)';
+                setTimeout(function(){
+                    spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/'+spriteDir+'_still_attack1_'+sprite+'.png)';
+                    setTimeout(function(){
+                        spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/'+spriteDir+'_still_noattack_'+sprite+'.png)';
+                    },100);
+                },100);
+            },100);
+        }
+        
+        window.onload = function() {
+            updateBoard([]);
+            
+            jArray = ["down", "left", "right", "up"];
+        kArray = ["llmove", "rlmove", "still"];
+        lArray = ["attack1", "attack2", "noattack"]
+        var count = 0;
+        for (var i = 0; i <= 9; i ++){
+            for (var j = 0; j < jArray.length; j++) {
+                for (var k = 0; k < kArray.length; k++) {
+                    
+                    if (kArray[k] == ("llmove" || "rlmove")) {
+                        var imageSRC = "assets/sprites/"+i+"/"+jArray[j]+"_"+kArray[k]+"_noattack_"+i+".png";
+                        var spriteImageName = "<img src=\"assets/sprites/"+i+"/"+jArray[j]+"_"+kArray[k]+"_noattack_"+i+".png\" width=\"1\" height=\"1\" alt=\"Image\"/>"
+                        //console.log(i, j, k, l, imageSRC);
+                        //$("#preload").append(spriteImageName);
+                        
+                        var div = document.getElementById("preload");
+                        //var content = document.createTextNode(spriteImageName);
+                        //div.appendChild(content);                   
+                        
+                        var elem = document.createElement("img");
+                        elem.setAttribute("src", imageSRC);
+                        elem.setAttribute("height", "1");
+                        elem.setAttribute("width", "1");
+                        elem.setAttribute("alt", "Image");
+                        div.appendChild(elem);
+                        
+                        //elem.onload = function(){
+                        //    console.log("Loaded "+ imageSRC);
+                        //}
+                    }
+                    else {
+                        for (var l = 0; l < lArray.length; l++) {
+                            var imageSRC = "assets/sprites/"+i+"/"+jArray[j]+"_"+kArray[k]+"_noattack_"+i+".png";
+                            var spriteImageName = "<img src=\"assets/sprites/"+i+"/"+jArray[j]+"_still_"+lArray[l]+"_"+i+".png\" width=\"1\" height=\"1\" alt=\"Image\"/>"
+                            //console.log(i, j, k, l, imageSRC);
+                            //$("#preload").append(spriteImageName);
+                                                        
+                            var div = document.getElementById("preload");
+                            //var content = document.createTextNode(spriteImageName);
+                            //div.appendChild(content);
+                            
+                            var elem = document.createElement("img");
+                            elem.setAttribute("src", imageSRC);
+                            elem.setAttribute("height", "1");
+                            elem.setAttribute("width", "1");
+                            elem.setAttribute("alt", "Image");
+                            div.appendChild(elem);
+                            
+                            //elem.onload = function(){
+                            //    console.log("Loaded "+ imageSRC);
+                            //}
+
+                        }
+                    }
                 }
             }
         }
-        //$("#preload").append('<img src=assets/sprites/"'++'" width="1" height="1" alt="Image"/>');
-        
-        //+i+'/'+spriteDir+'_still_attack1_'+sprite+'.png)';
-        
-        //down_llmove_noattack_5
-        
-        //i+"/"+jArray[j]+"_"+kArray[k]+"_"+lArray[l]+"_"+i+".png";
-        //+sprite+'/'+spriteDir+'_still_attack2_'+sprite+'.png)';
-        //+sprite+'/'+spriteDir+'_still_noattack_'+sprite+'.png)';
-    }
 
-    function newUser(user){
-        var sprite = user.sprite;
-        var userUuid = user.uuid;
-        $("#canvas").append('<div sprite="1" dir="down" id="sprite'+userUuid+'"class="sprite" style="top: '+(user.top*5)+'%; left: '+(user.left*5)+'%; background-image: url(\'assets/sprites/'+sprite+'/down_still_noattack_'+sprite+'.png\')"></div>');
-    }
+            var uuid = false;
+            var auth = false;
 
-    function deleteUser(user){
-        var spriteEle = document.getElementById('sprite'+user);
-        spriteEle.remove();
-    }
-    
-    function updateBoard(scoreArray){
-        //var scoreArray = [["abcdef", "9001"], ["catcat", "8999"], ["tabtab", "538"]]
+            var URL = "ws://guts2015ws.ngrok.com";
 
-        $('#namesTable').html('');
-        for (var i=0; i < scoreArray.length; i++) {
-            $('#namesTable').append('<div class="tableRow"><div class="left">'+ scoreArray[i][0] +'</div><div class="right">'+ scoreArray[i][1] +'</div></div>')
-        }       
-    }
+            // create new socket on page load
+            var socket = new WebSocket(URL, "echo-protocol");
 
-    function moveUp(spriteId){
-        var spriteEle = document.getElementById('sprite'+spriteId);
-        var sprite = spriteEle.getAttribute('sprite');
-        spriteEle.setAttribute('dir', 'up');
-
-        spriteEle.style.top = (parseInt(spriteEle.style.top.substring(0, spriteEle.style.top.length - 1)) - 5) + '%';
-        spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/up_llmove_noattack_'+sprite+'.png)';
-        
-        setTimeout(function(){
-            spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/up_still_noattack_'+sprite+'.png)';
-            setTimeout(function(){
-                spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/up_rlmove_noattack_'+sprite+'.png)';
-                setTimeout(function(){
-                    spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/up_still_noattack_'+sprite+'.png)';
-                },150);
-            },150);
-        },150);
-    }
-
-    function moveDown(spriteId){
-        var spriteEle = document.getElementById('sprite'+spriteId);
-        var sprite = spriteEle.getAttribute('sprite');
-        spriteEle.setAttribute('dir', 'down');
-
-        spriteEle.style.top = (parseInt(spriteEle.style.top.substring(0, spriteEle.style.top.length - 1)) + 5) + '%';
-        spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/down_llmove_noattack_'+sprite+'.png)';
-        setTimeout(function(){
-            spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/down_still_noattack_'+sprite+'.png)';
-            setTimeout(function(){
-                spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/down_rlmove_noattack_'+sprite+'.png)';
-                setTimeout(function(){
-                    spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/down_still_noattack_'+sprite+'.png)';
-                },150);
-            },150);
-        },150);
-    }
-
-    function moveLeft(spriteId){
-        var spriteEle = document.getElementById('sprite'+spriteId);
-        var sprite = spriteEle.getAttribute('sprite');
-        spriteEle.setAttribute('dir', 'left');
-
-        spriteEle.style.left = (parseInt(spriteEle.style.left.substring(0, spriteEle.style.left.length - 1)) - 5) + '%';
-        spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/left_llmove_noattack_'+sprite+'.png)';
-        setTimeout(function(){
-            spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/left_still_noattack_'+sprite+'.png)';
-            setTimeout(function(){
-                spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/left_rlmove_noattack_'+sprite+'.png)';
-                setTimeout(function(){
-                    spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/left_still_noattack_'+sprite+'.png)';
-                },150);
-            },150);
-        },150);
-    }
-
-    function moveRight(spriteId){
-        var spriteEle = document.getElementById('sprite'+spriteId);
-        var sprite = spriteEle.getAttribute('sprite');
-        spriteEle.setAttribute('dir', 'right');
-
-        spriteEle.style.left = (parseInt(spriteEle.style.left.substring(0, spriteEle.style.left.length - 1)) + 5) + '%';
-        spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/right_llmove_noattack_'+sprite+'.png)';
-        setTimeout(function(){
-            spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/right_still_noattack_'+sprite+'.png)';
-            setTimeout(function(){
-                spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/right_rlmove_noattack_'+sprite+'.png)';
-                setTimeout(function(){
-                    spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/right_still_noattack_'+sprite+'.png)';
-                },150);
-            },150);
-        },150);
-    }
-    
-    function attack(spriteId){
-        var spriteEle = document.getElementById('sprite'+spriteId);
-        var sprite = spriteEle.getAttribute('sprite');
-        var spriteDir = spriteEle.getAttribute('dir');
-        
-        spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/'+spriteDir+'_still_attack1_'+sprite+'.png)';
-        setTimeout(function(){
-            spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/'+spriteDir+'_still_attack2_'+sprite+'.png)';
-            setTimeout(function(){
-                spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/'+spriteDir+'_still_attack1_'+sprite+'.png)';
-                setTimeout(function(){
-                    spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/'+spriteDir+'_still_noattack_'+sprite+'.png)';
-                },100);
-            },100);
-        },100);
-    }
-    
-    window.onload = function() {
-        updateBoard([]);
-
-        var uuid = false;
-        var auth = false;
-
-        var URL = "ws://guts2015ws.ngrok.com";
-
-        // create new socket on page load
-        var socket = new WebSocket(URL, "echo-protocol");
-
-        socket.addEventListener("open", function(event) {
-          console.log("Connected!");
-        });
+            socket.addEventListener("open", function(event) {
+              console.log("Connected!");
+            });
 
 
-        socket.addEventListener("message", function(event) {
-          // messages received are in here!!
-          try {
-            var res = JSON.parse(event.data);
+            socket.addEventListener("message", function(event) {
+              // messages received are in here!!
+              try {
+                var res = JSON.parse(event.data);
 
-            if (res.uuid) {
-              uuid = res.uuid;
-              if (!auth) { 
-                socket.send(JSON.stringify({"uuid": uuid, "type": "secret", "secret": "239668a2cf0991bc30347196cbadd50da8a9a6f7561ecf41d201884b4fac0151"}));
-                auth = true;
-               }
-              console.log(uuid);
-            }
+                if (res.uuid) {
+                  uuid = res.uuid;
+                  if (!auth) { 
+                    socket.send(JSON.stringify({"uuid": uuid, "type": "secret", "secret": "239668a2cf0991bc30347196cbadd50da8a9a6f7561ecf41d201884b4fac0151"}));
+                    auth = true;
+                   }
+                  console.log(uuid);
+                }
 
-            if (res.secret) {
-              console.log('Auth successful.');
-            }
+                if (res.secret) {
+                  console.log('Auth successful.');
+                }
 
-            if (res.type && res.type == "new") {
-              newUser(res.user);
-            }
+                if (res.type && res.type == "new") {
+                  newUser(res.user);
+                }
 
-            if (res.move) {
-              switch(res.move){
-                case "up":
-                  moveUp(res.uuid);
-                  break;
-                case "down":
-                  moveDown(res.uuid);
-                  break;
-                case "left":
-                  moveLeft(res.uuid);
-                  break;
-                case "right":
-                  moveRight(res.uuid);
-                  break;
+                if (res.move) {
+                  switch(res.move){
+                    case "up":
+                      moveUp(res.uuid);
+                      break;
+                    case "down":
+                      moveDown(res.uuid);
+                      break;
+                    case "left":
+                      moveLeft(res.uuid);
+                      break;
+                    case "right":
+                      moveRight(res.uuid);
+                      break;
+                  }
+                }
+
+                if (res.attack) {
+                  attack(res.uuid);
+                }
+
+                if (res.type && res.type == "delete") {
+                    deleteUser(res.uuid);
+                }
+
+                if (res.type && res.type == "leaderboard") {
+                    updateBoard(res.leaderboard);
+                }
+
+              } catch (e) {
+                //console.log(e);
               }
-            }
+              console.log(event.data);
+            });
 
-            if (res.attack) {
-              attack(res.uuid);
-            }
-
-            if (res.type && res.type == "delete") {
-                deleteUser(res.uuid);
-            }
-
-            if (res.type && res.type == "leaderboard") {
-                updateBoard(res.leaderboard);
-            }
-
-          } catch (e) {
-            //console.log(e);
-          }
-          console.log(event.data);
-        });
-
-        socket.addEventListener("close", function(event) {
-          console.log("Disconnected from the server!");
-        });
-    };
+            socket.addEventListener("close", function(event) {
+              console.log("Disconnected from the server!");
+            });
+        };
     </script>
     
     <div id="preload">
