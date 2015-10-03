@@ -7,6 +7,7 @@
     </title>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 
+
     <style type="text/css">
     
         @font-face {
@@ -155,6 +156,7 @@
     
     <script type="text/javascript">
         var c = 0;
+        var socket;
 
         function newUser(user){
             var sprite = user.sprite;
@@ -332,7 +334,7 @@
             var URL = "ws://guts2015ws.ngrok.com";
 
             // create new socket on page load
-            var socket = new WebSocket(URL, "echo-protocol");
+            socket = new WebSocket(URL, "echo-protocol");
 
             socket.addEventListener("open", function(event) {
               console.log("Connected!");

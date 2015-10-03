@@ -103,23 +103,25 @@ wsServer.on('request', function(request) {
                     var attackingUser = Global.users[cmd.uuid];
                     try {
                         var victim;
-                        switch (attackingUser.direction) {
-                            case "up":
-                                var victim = Global.users[Global.arena[attackingUser.location[0]][attackingUser.location[1] - 1]];
-                                break;
-                            case "down":
-                                var victim = Global.users[Global.arena[attackingUser.location[0]][attackingUser.location[1] + 1]];
-                                break;
-                            case "left":
-                                //if (Global.users[Global.arena[attackingUser.location[0] - 1]]) {
-                                    var victim = Global.users[Global.arena[attackingUser.location[0] - 1][attackingUser.location[1]]];
-                                //}
-                                break;
-                            case "right":
-                                //if (Global.users[Global.arena[attackingUser.location[0] + 1]]) {
-                                    var victim = Global.users[Global.arena[attackingUser.location[0] + 1][attackingUser.location[1]]];
-                                //}
-                                break;
+                        if (!(attackingUser.health == 0)) {
+                            switch (attackingUser.direction) {
+                                case "up":
+                                    var victim = Global.users[Global.arena[attackingUser.location[0]][attackingUser.location[1] - 1]];
+                                    break;
+                                case "down":
+                                    var victim = Global.users[Global.arena[attackingUser.location[0]][attackingUser.location[1] + 1]];
+                                    break;
+                                case "left":
+                                    //if (Global.users[Global.arena[attackingUser.location[0] - 1]]) {
+                                        var victim = Global.users[Global.arena[attackingUser.location[0] - 1][attackingUser.location[1]]];
+                                    //}
+                                    break;
+                                case "right":
+                                    //if (Global.users[Global.arena[attackingUser.location[0] + 1]]) {
+                                        var victim = Global.users[Global.arena[attackingUser.location[0] + 1][attackingUser.location[1]]];
+                                    //}
+                                    break;
+                            }
                         }
                     } catch (e) {
                         console.log('########################');
