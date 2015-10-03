@@ -7,8 +7,12 @@
   <meta name="mobile-web-app-capable" content="yes">
   <title>HackSlash - Controller</title>
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script type="text/javascript" src="js/fastclick.js"></script>
   <script>
     "use strict";
+
+    var beep = new Audio('audio/beep.wav');
+    var strike = new Audio('audio/strike.wav');
 
     String.prototype.repeat = function( num ) {
         return new Array( num + 1 ).join( this );
@@ -36,7 +40,8 @@
     }
 
     function attack() {
-        socket.send(JSON.stringify({"type": "attack", "uuid": uuid}))
+        strike.play();
+        socket.send(JSON.stringify({"type": "attack", "uuid": uuid}));
     }
 
     function hideKeyboard() {
@@ -363,6 +368,10 @@
 
 
   <script type="text/javascript">
+
+    $(function() {
+      FastClick.attach(document.body);
+    });
     
     $('.sprite').on('click', function(){
       showStep2();
