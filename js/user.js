@@ -8,7 +8,7 @@ function User(socket) {
 
     Global.users[this.uuid] = this;
 
-    this.health = 4;
+    this.health = 3;
     this.score = 0;
 }
 
@@ -28,7 +28,7 @@ User.prototype.reset = function () {
     // R.I.P.
     this.set_leaderboard();
 
-    this.health = 4;
+    this.health = 3;
     this.score = 0;
 }
 
