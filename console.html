@@ -17,20 +17,22 @@
         
         section {
             float: left;
-            width: 750px;
-            position: absolute;
+            width: 750px;;
         }
             
         aside {
-            float: left;
-            margin-left: 800px;
-            position: relative;
+            float: right;
+            margin-left: 832px;
+            margin-right: 0 auto;
             border: 2px solid;
+            position: fixed;
         }
             
         #titleRow {
             float: top;
             height: 20px;
+            padding-left: 8px;
+            padding-right: 8px;
             padding-bottom: 3px;
         }
         
@@ -41,8 +43,46 @@
             border-top: 1px solid;
             
         }
+        
+        #container {
+            position: absolute;
+        }
+        
+        #topFence {
+            float:top;
+            margin-left: 32px;
+            height: 32px;
+            width: 750px;
+            position: relative;
+        }
+        
+        #bottomFence {
+            float:top;
+            margin-left: 32px;
+            margin-top: 1px;
+            height: 32px;
+            width: 750px;
+            position: relative;
+        }
+        
+        #leftFence {
+            float:left;
+            height: 750px;
+            width: 32px;
+            position: relative;
+        }
+        
+        #rightFence {
+            float: top;
+            margin-left: 782px;
+            margin-top: -750px;
+            height: 750px;
+            width: 32px;
+            position: relative;
+        }
 
         #canvas {
+            margin-left: 32px;
             height: 750px;
             width: 750px;
             background-image: url('assets/mapbackground.png');
@@ -52,7 +92,6 @@
         .sprite {
             height: 5%;
             width: 5%;
-            background-image: url('assets/sprites/0/down_still_noattack_0.png');
             background-size: cover;
             position: absolute;
             transition: left 0.5s, top 0.5s;
@@ -65,14 +104,35 @@
 <body>
     
         <section id= "canvasWrapper">
+        
+        <div id="container">
+        
+            <div id="topFence">
+                <img src="assets/fence_ns.png" height="32px" width="750px"></img>
+            </div>
+            
+            <div id="leftFence">
+                <img src="assets/fence_ew.png" height="750px" width="32px"></img>
+            </div>
+            
             <div id="canvas"></div>
-
+            
+            <div id="rightFence">
+                <img src="assets/fence_ew.png" height="750px" width="32px"></img>
+            </div>
+            
+            <div id="bottomFence">
+                <img src="assets/fence_ns.png" height="32px" width="750px"></img>
+            </div>
+            
             <button onclick="newUser()">new</button>
             <button title="up" onclick="moveUp('0')">up</button>
             <button title="down" onclick="moveDown('0')">down</button>
             <button title="left" onclick="moveLeft('0')">left</button>
             <button title="right" onclick="moveRight('0')">right</button>
-    
+            
+        </div>
+            
         </section>
     
         <aside id="scoreboard">
@@ -91,7 +151,8 @@
     var c = 0;
 
     function newUser(){
-        $("#canvas").append('<div sprite="0" id="sprite'+c+'"class="sprite" style="top: '+(c*5)+'%; left: '+(c*5)+'%;"></div>');
+        var sprite = 1;
+        $("#canvas").append('<div sprite="1" dir="down" id="sprite'+c+'"class="sprite" style="top: '+(c*5)+'%; left: '+(c*5)+'%; background-image: url(\'assets/sprites/'+sprite+'/down_still_noattack_'+sprite+'.png\')"></div>');
         c++;
     }
 
@@ -100,13 +161,14 @@
         var sprite = spriteEle.getAttribute('sprite');
 
         spriteEle.style.top = (parseInt(spriteEle.style.top.substring(0, spriteEle.style.top.length - 1)) - 5) + '%';
-        spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/up_llmove_noattack_0.png)';
+        spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/up_llmove_noattack_'+sprite+'.png)';
+        
         setTimeout(function(){
-            spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/up_still_noattack_0.png)';
+            spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/up_still_noattack_'+sprite+'.png)';
             setTimeout(function(){
-                spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/up_rlmove_noattack_0.png)';
+                spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/up_rlmove_noattack_'+sprite+'.png)';
                 setTimeout(function(){
-                    spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/up_still_noattack_0.png)';
+                    spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/up_still_noattack_'+sprite+'.png)';
                 },150);
             },150);
         },150);
@@ -117,13 +179,13 @@
         var sprite = spriteEle.getAttribute('sprite');
 
         spriteEle.style.top = (parseInt(spriteEle.style.top.substring(0, spriteEle.style.top.length - 1)) + 5) + '%';
-        spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/down_llmove_noattack_0.png)';
+        spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/down_llmove_noattack_'+sprite+'.png)';
         setTimeout(function(){
-            spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/down_still_noattack_0.png)';
+            spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/down_still_noattack_'+sprite+'.png)';
             setTimeout(function(){
-                spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/down_rlmove_noattack_0.png)';
+                spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/down_rlmove_noattack_'+sprite+'.png)';
                 setTimeout(function(){
-                    spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/down_still_noattack_0.png)';
+                    spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/down_still_noattack_'+sprite+'.png)';
                 },150);
             },150);
         },150);
@@ -134,13 +196,13 @@
         var sprite = spriteEle.getAttribute('sprite');
 
         spriteEle.style.left = (parseInt(spriteEle.style.left.substring(0, spriteEle.style.left.length - 1)) - 5) + '%';
-        spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/left_llmove_noattack_0.png)';
+        spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/left_llmove_noattack_'+sprite+'.png)';
         setTimeout(function(){
-            spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/left_still_noattack_0.png)';
+            spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/left_still_noattack_'+sprite+'.png)';
             setTimeout(function(){
-                spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/left_rlmove_noattack_0.png)';
+                spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/left_rlmove_noattack_'+sprite+'.png)';
                 setTimeout(function(){
-                    spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/left_still_noattack_0.png)';
+                    spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/left_still_noattack_'+sprite+'.png)';
                 },150);
             },150);
         },150);
@@ -151,13 +213,13 @@
         var sprite = spriteEle.getAttribute('sprite');
 
         spriteEle.style.left = (parseInt(spriteEle.style.left.substring(0, spriteEle.style.left.length - 1)) + 5) + '%';
-        spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/right_llmove_noattack_0.png)';
+        spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/right_llmove_noattack_'+sprite+'.png)';
         setTimeout(function(){
-            spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/right_still_noattack_0.png)';
+            spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/right_still_noattack_'+sprite+'.png)';
             setTimeout(function(){
-                spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/right_rlmove_noattack_0.png)';
+                spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/right_rlmove_noattack_'+sprite+'.png)';
                 setTimeout(function(){
-                    spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/right_still_noattack_0.png)';
+                    spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/right_still_noattack_'+sprite+'.png)';
                 },150);
             },150);
         },150);

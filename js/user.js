@@ -63,7 +63,7 @@ User.prototype.move = function (direction) {
             if (this.location[0] > 0) {
                 if (!(Global.arena[this.location[0] - 1][this.location[1]])) {
                     Global.arena[this.location[0]][this.location[1]] = false;
-                    this.location[0] -= 1;
+                    this.location[1] -= 1;
                     Global.arena[this.location[0]][this.location[1]] = this.uuid;
                     console.log("moving left");
                 }
