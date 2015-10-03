@@ -139,6 +139,7 @@
             <button title="down" onclick="moveDown('0')">down</button>
             <button title="left" onclick="moveLeft('0')">left</button>
             <button title="right" onclick="moveRight('0')">right</button>
+            <button title="attack" onclick="attack('0')">attack</button>
             
         </div>
             
@@ -175,6 +176,7 @@
     function moveUp(spriteId){
         var spriteEle = document.getElementById('sprite'+spriteId);
         var sprite = spriteEle.getAttribute('sprite');
+        spriteEle.setAttribute('dir', 'up');
 
         spriteEle.style.top = (parseInt(spriteEle.style.top.substring(0, spriteEle.style.top.length - 1)) - 5) + '%';
         spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/up_llmove_noattack_'+sprite+'.png)';
@@ -193,6 +195,7 @@
     function moveDown(spriteId){
         var spriteEle = document.getElementById('sprite'+spriteId);
         var sprite = spriteEle.getAttribute('sprite');
+        spriteEle.setAttribute('dir', 'down');
 
         spriteEle.style.top = (parseInt(spriteEle.style.top.substring(0, spriteEle.style.top.length - 1)) + 5) + '%';
         spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/down_llmove_noattack_'+sprite+'.png)';
@@ -210,6 +213,7 @@
     function moveLeft(spriteId){
         var spriteEle = document.getElementById('sprite'+spriteId);
         var sprite = spriteEle.getAttribute('sprite');
+        spriteEle.setAttribute('dir', 'left');
 
         spriteEle.style.left = (parseInt(spriteEle.style.left.substring(0, spriteEle.style.left.length - 1)) - 5) + '%';
         spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/left_llmove_noattack_'+sprite+'.png)';
@@ -227,6 +231,7 @@
     function moveRight(spriteId){
         var spriteEle = document.getElementById('sprite'+spriteId);
         var sprite = spriteEle.getAttribute('sprite');
+        spriteEle.setAttribute('dir', 'right');
 
         spriteEle.style.left = (parseInt(spriteEle.style.left.substring(0, spriteEle.style.left.length - 1)) + 5) + '%';
         spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/right_llmove_noattack_'+sprite+'.png)';
@@ -236,6 +241,23 @@
                 spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/right_rlmove_noattack_'+sprite+'.png)';
                 setTimeout(function(){
                     spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/right_still_noattack_'+sprite+'.png)';
+                },150);
+            },150);
+        },150);
+    }
+    
+    function attack(spriteId){
+        var spriteEle = document.getElementById('sprite'+spriteId);
+        var sprite = spriteEle.getAttribute('sprite');
+        var spriteDir = spriteEle.getAttribute('dir');
+        
+        spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/'+spriteDir+'_still_attack1_'+sprite+'.png)';
+        setTimeout(function(){
+            spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/'+spriteDir+'_still_attack2_'+sprite+'.png)';
+            setTimeout(function(){
+                spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/'+spriteDir+'_still_attack1_'+sprite+'.png)';
+                setTimeout(function(){
+                    spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/'+spriteDir+'_still_noattack_'+sprite+'.png)';
                 },150);
             },150);
         },150);
