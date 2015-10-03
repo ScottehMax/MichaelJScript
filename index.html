@@ -53,6 +53,11 @@
     }
 
     function attack() {
+        if (atktimeout) return false;
+        atktimeout = true;
+        setTimeout(function(){
+          atktimeout = false;
+        }, 300);
         strike.play();
         socket.send(JSON.stringify({"type": "attack", "uuid": uuid}));
     }
@@ -387,6 +392,7 @@
   <script type="text/javascript">
   var sprite_id;
   var deathtimeout = false;
+  var atktimeout = false;
     $(function() {
       FastClick.attach(document.body);
     });
