@@ -74,6 +74,7 @@ wsServer.on('request', function(request) {
                             Global.console.sendUTF(JSON.stringify({"secret": true}));
                             Global.users[cmd.uuid].destroy();
                         }
+                        break;
                     case 'set_name':
                         Global.users[cmd.uuid].set_name(cmd.name);
                         break;

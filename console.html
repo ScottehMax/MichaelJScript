@@ -265,19 +265,18 @@
         },100);
     }
     
-    window.onload( 
+    window.onload = function() {
         updateBoard();
 
         var uuid = false;
 
-        URL = "ws://guts2015ws.ngrok.com";
+        var URL = "ws://guts2015ws.ngrok.com";
 
         // create new socket on page load
-        socket = new WebSocket(URL, "echo-protocol");
+        var socket = new WebSocket(URL, "echo-protocol");
 
         socket.addEventListener("open", function(event) {
           console.log("Connected!");
-          socket.send(JSON.stringify({"uuid": uuid, "type": "secret", "secret": "239668a2cf0991bc30347196cbadd50da8a9a6f7561ecf41d201884b4fac0151"}));
         });
 
         socket.addEventListener("message", function(event) {
@@ -287,6 +286,7 @@
 
             if (res.uuid) {
               uuid = res.uuid;
+              socket.send(JSON.stringify({"uuid": uuid, "type": "secret", "secret": "239668a2cf0991bc30347196cbadd50da8a9a6f7561ecf41d201884b4fac0151"}));
               console.log(uuid);
             }
 
@@ -324,7 +324,7 @@
         socket.addEventListener("close", function(event) {
           console.log("Disconnected from the server!");
         });
-    );
+    };
     </script>
 
 </body>
