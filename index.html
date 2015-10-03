@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="height=device-height, width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="mobile-web-app-capable" content="yes">
   <title>HackSlash - Controller</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
@@ -22,9 +26,49 @@
         socket.send(JSON.stringify({"uuid": uuid, "type": "set_job", "job": job}));
     }
 
+    function hideKeyboard() {
+  //this set timeout needed for case when hideKeyboard
+  //is called inside of 'onfocus' event handler
+  setTimeout(function() {
+
+      //creating temp field
+      var field = document.createElement('input');
+      field.setAttribute('type', 'text');
+      //hiding temp field from peoples eyes
+      //-webkit-user-modify is nessesary for Android 4.x
+      field.setAttribute('style', 'position:absolute; top: 0px; opacity: 0; -webkit-user-modify: read-write-plaintext-only; left:0px;');
+      document.body.appendChild(field);
+
+      //adding onfocus event handler for out temp field
+      field.onfocus = function(){
+        //this timeout of 200ms is nessasary for Android 2.3.x
+        setTimeout(function() {
+
+          field.setAttribute('style', 'display:none;');
+          setTimeout(function() {
+            document.body.removeChild(field);
+            document.body.focus();
+          }, 14);
+
+        }, 200);
+      };
+      //focusing it
+      field.focus();
+
+      }, 50);
+    }
+
     window.addEventListener("load", function(event) {
 
-      URL = "ws://localhost:9001";
+
+
+      if(window.innerHeight > window.innerWidth){
+        alert("Please use Landscape!");
+      }
+
+      window.scrollTo(0,1) 
+
+      URL = "ws://guts2015ws.ngrok.com";
 
       // create new socket on page load
       socket = new WebSocket(URL, "echo-protocol");
@@ -296,6 +340,7 @@
           $('#name_3').keyup(function(){
             if(validateName($( this ).val())){
               set_name($('#name_1').val() + $('#name_2').val()+ $('#name_3').val());
+              hideKeyboard();
               showMain();
             } else {
               $('#name_3').val('');
