@@ -86,7 +86,7 @@
       text-align: center;
     }
 
-      #welcomeHeader {
+      .welcomeHeader {
         text-align: center;
         margin: 20px 0;
       }
@@ -202,11 +202,15 @@
       display: none;
       background-color: #333;
     }
+    
+    #deathScoreTitle {
+      
+    }
   </style>
 </head>
 <body>
   <div id="welcome">
-    <div id="welcomeHeader">
+    <div class="welcomeHeader">
       <span class="headerText"><span class="headerTextCap">H</span>ack<span class="headerTextCap">S</span>lash</span>
     </div>
     <div id="welcome_step1">
@@ -261,7 +265,14 @@
       </div>
     </div>
   </div>
-  <div id="death">death</div>
+  <div id="death">
+    <div class="welcomeHeader">
+      <span class="headerText"><span class="headerTextCap">G</span>ame <span class="headerTextCap">O</span>ver!</span>
+      <div id="deathScoreTitle">You Scored:</div>
+      <span id="deathScore">0</span>
+      
+    </div>
+  </div>
 
   <script type="text/javascript">
     
@@ -309,6 +320,7 @@
       $('#main').css('top', 0).fadeIn(300);
     }
     function showDeath(){
+      $('#deathScore').html($('#score').text());
       $('#death').css('top', 0).fadeIn(300);
     }
     function hideMain(){
