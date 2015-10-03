@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>HackSlash - Controller</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <style type="text/css">
+    @font-face {
+      font-family: '8bit_wondernominal';
+      src: url('assets/8-bit_wonder-webfont.eot');
+      src: url('assets/8-bit_wonder-webfont.eot?#iefix') format('embedded-opentype'),
+           url('assets/8-bit_wonder-webfont.woff2') format('woff2'),
+           url('assets/8-bit_wonder-webfont.woff') format('woff'),
+           url('assets/8-bit_wonder-webfont.ttf') format('truetype'),
+           url('assets/8-bit_wonder-webfont.svg#8bit_wondernominal') format('svg');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    body {
+      background-color: #444;
+      color: #EEE;
+      font-family: '8bit_wondernominal';
+    }
+    .clear {
+      clear: both;
+    }
+
+    #welcome {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: #333;
+      text-align: center;
+    }
+
+      #welcomeHeader {
+        text-align: center;
+        margin: 20px 0;
+      }
+
+      .headerTextCap {
+        font-size: 32px;
+      }
+      .headerText {
+        font-size: 24px;
+      }
+
+      #spriteSelector {
+        width: 275px;
+        height: 110px;
+        background-color: red;
+        margin: 20px auto;
+      }
+        .sprite {
+          height: 55px;
+          width: 55px;
+          float: left;
+          background-color: blue;
+        }
+
+      .name {
+        height: 50px;
+        width: 50px;
+        font-size: 42px;
+        background-color: #333;
+        color: #CB6B6B;
+        border: none;
+        border-color: transparent;
+        text-align: center;
+        font-family: '8bit_wondernominal';
+      }
+
+    #main {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      display: none;
+      background-color: #333;
+    }
+      #mainTopCont {
+        height: 64px;
+        width: 400px;
+        margin: 10px auto;
+        position: relative;
+      }
+        #hearts {
+          width: 192px;
+          height: 48px;
+          position: absolute;
+          top: 8px;
+          left: 0;
+        }
+          #hearts img {
+            width: 48px;
+            height: 48px;
+          }
+        #score {
+          width: 150px;
+          height: 48px;
+          position: absolute;
+          top: 12px;
+          right: 0;
+          color: #EEE;
+          font-size: 32px;
+          text-align: right;
+        }
+      #mainCont {
+        height: 150px;
+        width: 400px;
+        margin: 10px auto;
+      }
+
+      #dpad {
+        height: 150px;
+        width: 150px;
+        float: left;
+      }
+      area {
+        pointer: pointer;
+      }
+
+      #mainMiddle {
+        height: 150px;
+        width: 100px;
+        float: left;
+      }
+      #mainButtonCont {
+        height: 150px;
+        width: 150px;
+        float: left;
+        position: relative;
+      }
+      #mainButtonCont img {
+        height: 80px;
+        width: 80px;
+        position: absolute;
+        top: 35px;
+        left: 35px;
+      }
+
+    #death {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      display: none;
+      background-color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div id="welcome">
+    <div id="welcomeHeader">
+      <span class="headerText"><span class="headerTextCap">H</span>ack<span class="headerTextCap">S</span>lash</span>
+    </div>
+    <div id="welcome_step1">
+      Choose a sprite:
+      <div id="spriteSelector">
+        <div class="sprite"></div>
+        <div class="sprite"></div>
+        <div class="sprite"></div>
+        <div class="sprite"></div>
+        <div class="sprite"></div>
+        <div class="clear"></div>
+        <div class="sprite"></div>
+        <div class="sprite"></div>
+        <div class="sprite"></div>
+        <div class="sprite"></div>
+        <div class="sprite"></div>
+      </div>
+    </div>
+    <div id="welcome_step2" style="display: none">
+      Enter a Name:
+      <div id="nameSelector">
+        <input class="name" id="name_1">
+        <input class="name" id="name_2">
+        <input class="name" id="name_3">
+      </div>
+    </div>
+  </div>
+  <div id="main">
+    <div id="mainTopCont">
+      <div id="hearts">
+        <img src="../img/heart.png">
+        <img src="../img/heart.png">
+        <img src="../img/heart_off.png">
+      </div>
+      <div id="score">
+        100
+      </div>
+    </div>
+    <div id="mainCont">
+      <img id="dpad" src="../img/dpad.png" alt="D-PAD" usemap="#dpadmap">
+
+      <map name="dpadmap">
+        <area shape="rect" coords="53,0,95,50" href="javascript:alert()" alt="Up">
+        <area shape="rect" coords="53,95,95,150" href="javascript:alert()" alt="Down">
+        <area shape="rect" coords="0,53,53,90" href="javascript:alert()" alt="Left">
+        <area shape="rect" coords="95,53,150,90" href="javascript:alert()" alt="Right">
+      </map>
+
+      <div id="mainMiddle"></div>
+      <div id="mainButtonCont">
+        <img src="../img/red.png">
+      </div>
+    </div>
+  </div>
+  <div id="death">death</div>
+
+  <script type="text/javascript">
+    
+    $('.sprite').on('click', function(){
+      showStep2();
+    })
+
+    function showStep2(){
+      function validateName(strIn){
+        return /[A-Z0-9]{1}/ig.test(strIn) && strIn.length == 1;
+      }
+
+      $('#welcome_step1').fadeOut(300).delay(0.3).css('height',0);
+      setTimeout(function(){
+        $('#welcome_step2').fadeIn(300);
+        setTimeout(function(){
+          $('#name_1').focus();
+          $('#name_1').keyup(function(){
+            if(validateName($( this ).val())){
+              $('#name_2').focus();
+            } else {
+              $('#name_1').val('');
+            }
+          });
+          $('#name_2').keyup(function(){
+            if(validateName($( this ).val())){
+              $('#name_3').focus();
+            } else {
+              $('#name_2').val('');
+            }
+          });
+          $('#name_3').keyup(function(){
+            if(validateName($( this ).val())){
+              showMain();
+            } else {
+              $('#name_3').val('');
+            }
+          });
+        }, 300);
+      }, 300);
+    }
+
+    function showMain(){
+      $('#main').css('top', 0).fadeIn(300);
+    }
+    function showDeath(){
+      $('#death').css('top', 0).fadeIn(300);
+    }
+    function hideMain(){
+      $('#main').fadeOut(300).delay(0.3).css('top', 0);
+    }
+    function hideDeath(){
+      $('#death').fadeOut(300).delay(0.3).css('top', 0);
+    }
+  </script>
+</body>
+</html>
