@@ -68,7 +68,7 @@ wsServer.on('request', function(request) {
 
                 switch (cmd.type) {
                     case 'secret':
-                        if (cmd.secret === "SOME_SECRET_KEY") {
+                        if (cmd.secret === "239668a2cf0991bc30347196cbadd50da8a9a6f7561ecf41d201884b4fac0151") {
                             // this is the console!
                             Global.console = Global.users[cmd.uuid].socket;
                             Global.console.sendUTF(JSON.stringify({"secret": true}));
