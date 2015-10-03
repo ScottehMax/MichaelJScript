@@ -19,9 +19,7 @@ User.prototype.set_name = function (name) {
 
     console.log(this);
 
-    this.location = [utils.randint(0, 20), utils.randint(0, 20)];
-    Global.arena[this.location[0]][this.location[1]] = this.uuid;
-    console.log(Global.arena);
+    this.set_location();
 }
 
 User.prototype.set_job = function(job) {
@@ -29,38 +27,56 @@ User.prototype.set_job = function(job) {
     console.log("setting user " + this.uuid + " to job " + this.job);
 }
 
+User.prototype.set_location = function () {
+    var try_location = [utils.randint(0, 20), utils.randint(0, 20)];
+    while (Global.arena[try_location[0]][try_location[1]]) {
+        try_location = [utils.randint(0, 20), utils.randint(0, 20)];
+    }
+
+    this.location = try_location;
+    Global.arena[this.location[0]][this.location[1]] = this.uuid;
+}
+
 User.prototype.move = function (direction) {
     switch (direction) {
         case "up":
             if (this.location[1] > 0) {
-                Global.arena[this.location[0]][this.location[1]] = false;
-                this.location[1] -= 1;
-                Global.arena[this.location[0]][this.location[1]] = this.uuid;
-                console.log("moving up");
+                if (!(Global.arena[this.location[0]][this.location[1] - 1])) {
+                    Global.arena[this.location[0]][this.location[1]] = false;
+                    this.location[1] -= 1;
+                    Global.arena[this.location[0]][this.location[1]] = this.uuid;
+                    console.log("moving up");
+                }
             }
             break;
         case "down":
             if (this.location[1] < 19) {
-                Global.arena[this.location[0]][this.location[1]] = false;
-                this.location[1] += 1;
-                Global.arena[this.location[0]][this.location[1]] = this.uuid;
-                console.log("moving down");
+                if (!(Global.arena[this.location[0]][this.location[1] + 1])) {
+                    Global.arena[this.location[0]][this.location[1]] = false;
+                    this.location[1] += 1;
+                    Global.arena[this.location[0]][this.location[1]] = this.uuid;
+                    console.log("moving down");
+                }
             }
             break;
         case "left":
             if (this.location[0] > 0) {
-                Global.arena[this.location[0]][this.location[1]] = false;
-                this.location[1] -= 1;
-                Global.arena[this.location[0]][this.location[1]] = this.uuid;
-                console.log("moving left");
+                if (!(Global.arena[this.location[0] - 1][this.location[1]])) {
+                    Global.arena[this.location[0]][this.location[1]] = false;
+                    this.location[0] -= 1;
+                    Global.arena[this.location[0]][this.location[1]] = this.uuid;
+                    console.log("moving left");
+                }
             }
             break;
         case "right":
             if (this.location[0] < 19) {
-                Global.arena[this.location[0]][this.location[1]] = false;
-                this.location[0] += 1;
-                Global.arena[this.location[0]][this.location[1]] = this.uuid;
-                console.log("moving right");
+                if (!(Global.arena[this.location[0] + 1][this.location[1]])) {
+                    Global.arena[this.location[0]][this.location[1]] = false;
+                    this.location[0] += 1;
+                    Global.arena[this.location[0]][this.location[1]] = this.uuid;
+                    console.log("moving right");
+                }
             }
             break;
         console.log(this.location);
@@ -71,8 +87,13 @@ User.prototype.reset = function () {
     // R.I.P.
     this.set_leaderboard();
 
+    // remove from the arena
+    Global.arena[this.location[0]][this.location[1]] = false;
+
     this.health = 3;
     this.score = 0;
+
+    this.set_location();
 }
 
 User.prototype.set_leaderboard = function () {

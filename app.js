@@ -5,6 +5,7 @@ var user = require('./js/user.js');
 var utils = require('./js/utils.js');
 
 var PORT = 9001;
+var MAX_USERS = 0;
 
 
 var WebSocketServer = require('websocket').server;
@@ -35,6 +36,14 @@ wsServer.on('request', function(request) {
       request.reject();
       console.log((new Date()) + ' Connection from origin ' + request.origin + ' rejected.');
       return;
+    }
+
+    if (Global.users.length == MAX_USERS) {
+        // too many users!
+        var temp_conn = request.accept('echo-protocol', request.origin);
+        temp_conn.sendUTF('{"type": "failure", "message": "There are too many users connected."');
+        temp_conn.close()
+        return;
     }
 
     console.log('someone is connecting!');
