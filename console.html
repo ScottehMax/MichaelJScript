@@ -159,8 +159,7 @@
         function newUser(user){
             var sprite = user.sprite;
             var userUuid = user.uuid;
-            $("#canvas").append('<div sprite="1
-              '+sprite+'" dir="down" id="sprite'+userUuid+'"class="sprite" style="top: '+(user.top*5)+'%; left: '+(user.left*5)+'%; background-image: url(\'assets/sprites/'+sprite+'/down_still_noattack_'+sprite+'.png\')"></div>');
+            $("#canvas").append('<div sprite="'+sprite+'" dir="down" id="sprite'+userUuid+'"class="sprite" style="color:white;font-family: \'8bit_wondernominal\';text-align:center;top: '+(user.top*5)+'%; left: '+(user.left*5)+'%; background-image: url(\'assets/sprites/'+sprite+'/down_still_noattack_'+sprite+'.png\')"><span style="top:-15px;position:relative">' + user.name + '</span></div>');
         }
 
         function deleteUser(user){

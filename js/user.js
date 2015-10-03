@@ -39,7 +39,7 @@ User.prototype.set_location = function () {
 
     this.location = try_location;
 
-    utils.sendConsole(JSON.stringify({"type":"new", "user":{"uuid":this.uuid, "sprite":this.sprite, "top":this.location[1], "left":this.location[0]}}))
+    utils.sendConsole(JSON.stringify({"type":"new", "user":{"name": this.name, "uuid":this.uuid, "sprite":this.sprite, "top":this.location[1], "left":this.location[0]}}))
 
     Global.arena[this.location[0]][this.location[1]] = this.uuid;
 }
