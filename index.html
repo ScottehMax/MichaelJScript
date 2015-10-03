@@ -101,14 +101,13 @@
       #spriteSelector {
         width: 275px;
         height: 110px;
-        background-color: red;
         margin: 20px auto;
       }
         .sprite {
           height: 55px;
           width: 55px;
           float: left;
-          background-color: blue;
+          background-size: cover;
         }
 
       .name {
@@ -212,25 +211,25 @@
     <div id="welcome_step1">
       Choose a sprite:
       <div id="spriteSelector">
-        <div class="sprite"></div>
-        <div class="sprite"></div>
-        <div class="sprite"></div>
-        <div class="sprite"></div>
-        <div class="sprite"></div>
+        <div class="sprite" style="background-image: url(assets/sprites/0/spinner.gif)"></div>
+        <div class="sprite" style="background-image: url(assets/sprites/1/spinner.gif)"></div>
+        <div class="sprite" style="background-image: url(assets/sprites/2/spinner.gif)"></div>
+        <div class="sprite" style="background-image: url(assets/sprites/3/spinner.gif)"></div>
+        <div class="sprite" style="background-image: url(assets/sprites/4/spinner.gif)"></div>
         <div class="clear"></div>
-        <div class="sprite"></div>
-        <div class="sprite"></div>
-        <div class="sprite"></div>
-        <div class="sprite"></div>
-        <div class="sprite"></div>
+        <div class="sprite" style="background-image: url(assets/sprites/5/spinner.gif)"></div>
+        <div class="sprite" style="background-image: url(assets/sprites/6/spinner.gif)"></div>
+        <div class="sprite" style="background-image: url(assets/sprites/7/spinner.gif)"></div>
+        <div class="sprite" style="background-image: url(assets/sprites/8/spinner.gif)"></div>
+        <div class="sprite" style="background-image: url(assets/sprites/9/spinner.gif)"></div>
       </div>
     </div>
     <div id="welcome_step2" style="display: none">
       Enter a Name:
       <div id="nameSelector">
-        <input class="name" id="name_1">
-        <input class="name" id="name_2">
-        <input class="name" id="name_3">
+        <input class="name" id="name_1" maxlength="1">
+        <input class="name" id="name_2" maxlength="1">
+        <input class="name" id="name_3" maxlength="1">
       </div>
     </div>
   </div>
