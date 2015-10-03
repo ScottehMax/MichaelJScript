@@ -3,6 +3,8 @@ var Global = require('./js/global.js')
 var user = require('./js/user.js');
 var utils = require('./js/utils.js');
 
+var PORT = 9001;
+
 
 var WebSocketServer = require('websocket').server;
 var http = require('http');
@@ -12,8 +14,8 @@ var server = http.createServer(function(request, response) {
     response.writeHead(404);
     response.end();
 });
-server.listen(8080, function() {
-    console.log((new Date()) + ' | Server is listening on port 8080');
+server.listen(PORT, function() {
+    console.log((new Date()) + ' | Server is listening on port ' + PORT);
 });
 
 wsServer = new WebSocketServer({

@@ -17,7 +17,7 @@
       var socket;
 
       status.textContent = "Not Connected";
-      url.value = "ws://localhost:8080";
+      url.value = "ws://localhost:9001";
       close.disabled = true;
       send.disabled = true;
 
@@ -59,12 +59,12 @@
       // Send text to the server when the Send button is clicked
       send.addEventListener("click", function(event) {
         socket.send(text.value);
-        text.value = "";
       });
     });
   </script>
 </head>
 <body>
+  <center>
   Status: <span id="status"></span><br />
   URL: <input id="url" /><br />
   <input id="open" type="button" value="Connect" />&nbsp;
@@ -72,5 +72,6 @@
   <input id="send" type="button" value="Send" />&nbsp;
   <input id="text" /><br />
   <span id="message"></span>
+  </center>
 </body>
 </html>

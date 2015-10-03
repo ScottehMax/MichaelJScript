@@ -10,13 +10,20 @@ function User(socket) {
 
     this.health = 4;
     this.score = 0;
+}
+
+User.prototype.set_info = function (name, class) {
+    this.name = name;
+    this.class = class;
 
     this.location = [utils.randint(0, 20), utils.randint(0, 20)];
 }
 
 User.prototype.reset = function () {
     // R.I.P.
-    do_leaderboard_check(); // still not done you lazy bum
+    Global.leaderboard.push([this.name, this.score]);
+    Global.leaderboard.sort(function(a, b){ return b[1]-a[1]; });
+    Global.leaderboard = Global.leaderboard.slice(0, 10);
 
     this.health = 4;
     this.score = 0;
