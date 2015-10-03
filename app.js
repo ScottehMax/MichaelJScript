@@ -38,7 +38,7 @@ wsServer.on('request', function(request) {
       return;
     }
 
-    if (Global.users.length == MAX_USERS) {
+    if (Global.users.length >= MAX_USERS) {
         // too many users!
         var temp_conn = request.accept('echo-protocol', request.origin);
         temp_conn.sendUTF('{"type": "failure", "message": "There are too many users connected."');
@@ -67,11 +67,22 @@ wsServer.on('request', function(request) {
                 console.log(cmd);
 
                 switch (cmd.type) {
+                    case 'secret':
+                        if (cmd.secret === "239668a2cf0991bc30347196cbadd50da8a9a6f7561ecf41d201884b4fac0151") {
+                            // this is the console!
+                            Global.console = Global.users[cmd.uuid].socket;
+                            Global.console.sendUTF(JSON.stringify({"secret": true}));
+                            Global.users[cmd.uuid].destroy();
+                        }
+                        break;
                     case 'set_name':
                         Global.users[cmd.uuid].set_name(cmd.name);
                         break;
                     case 'set_job':
                         Global.users[cmd.uuid].set_job(cmd.job);
+                        break;
+                    case 'set_sprite':
+                        Global.users[cmd.uuid].set_sprite(cmd.sprite);
                         break;
                     case 'try_move':
                         Global.users[cmd.uuid].move(cmd.direction);

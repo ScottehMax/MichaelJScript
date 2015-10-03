@@ -188,10 +188,10 @@
         //+sprite+'/'+spriteDir+'_still_noattack_'+sprite+'.png)';
     }
 
-    function newUser(){
-        var sprite = 1;
-        $("#canvas").append('<div sprite="1" dir="down" id="sprite'+c+'"class="sprite" style="top: '+(c*5)+'%; left: '+(c*5)+'%; background-image: url(\'assets/sprites/'+sprite+'/down_still_noattack_'+sprite+'.png\')"></div>');
-        c++;
+    function newUser(user){
+        var sprite = user.sprite;
+        var userUuid = user.uuid;
+        $("#canvas").append('<div sprite="1" dir="down" id="sprite'+userUuid+'"class="sprite" style="top: '+(user.top*5)+'%; left: '+(user.left*5)+'%; background-image: url(\'assets/sprites/'+sprite+'/down_still_noattack_'+sprite+'.png\')"></div>');
     }
     
     function updateBoard(){
@@ -292,7 +292,66 @@
         },100);
     }
     
-    window.onload( updateBoard() );
+    window.onload = function() {
+        updateBoard();
+
+        var uuid = false;
+
+        var URL = "ws://guts2015ws.ngrok.com";
+
+        // create new socket on page load
+        var socket = new WebSocket(URL, "echo-protocol");
+
+        socket.addEventListener("open", function(event) {
+          console.log("Connected!");
+        });
+
+        socket.addEventListener("message", function(event) {
+          // messages received are in here!!
+          try {
+            var res = JSON.parse(event.data);
+
+            if (res.uuid) {
+              uuid = res.uuid;
+              socket.send(JSON.stringify({"uuid": uuid, "type": "secret", "secret": "239668a2cf0991bc30347196cbadd50da8a9a6f7561ecf41d201884b4fac0151"}));
+              console.log(uuid);
+            }
+
+            if (res.secret) {
+              console.log('Auth successful.');
+            }
+
+            if (res.type && res.type == "new") {
+              newUser(res.user);
+            }
+
+            if (res.move) {
+              switch(res.move){
+                case "up":
+                  moveUp(res.uuid);
+                  break;
+                case "down":
+                  moveDown(res.uuid);
+                  break;
+                case "left":
+                  moveLeft(res.uuid);
+                  break;
+                case "right":
+                  moveRight(res.uuid);
+                  break;
+              }
+            }
+
+          } catch (e) {
+            //console.log(e);
+          }
+          console.log(event.data);
+        });
+
+        socket.addEventListener("close", function(event) {
+          console.log("Disconnected from the server!");
+        });
+    };
     </script>
     
     <div id="preload">

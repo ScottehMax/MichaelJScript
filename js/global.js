@@ -1,6 +1,7 @@
 var Global = {
     leaderboard: [],
     users: {},
+    console: false
 };
 
 Global.arena = new Array(20);
