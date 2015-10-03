@@ -54,9 +54,11 @@
 
     function attack() {
         if (atktimeout) return false;
+        $('#atkButton').attr('src', 'img/red_dis.png');
         atktimeout = true;
         setTimeout(function(){
           atktimeout = false;
+          $('#atkButton').attr('src', 'img/red.png');
         }, 300);
         strike.play();
         socket.send(JSON.stringify({"type": "attack", "uuid": uuid}));
@@ -375,7 +377,7 @@
 
       <div id="mainMiddle"></div>
       <div id="mainButtonCont">
-        <img src="img/red.png" onclick="javascript:attack()">
+        <img id="atkButton" src="img/red.png" onclick="javascript:attack()">
       </div>
     </div>
   </div>
