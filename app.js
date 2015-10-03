@@ -86,23 +86,9 @@ wsServer.on('request', function(request) {
                         break;
                     case 'try_move':
                         Global.users[cmd.uuid].move(cmd.direction);
-                        Global.users[cmd.uuid].score += 100;
-                        Global.users[cmd.uuid].socket.sendUTF(JSON.stringify({"score": Global.users[cmd.uuid].score}));
-                        // Global.users[cmd.uuid].health -= 1;
-                        Global.users[cmd.uuid].socket.sendUTF(JSON.stringify({"health": Global.users[cmd.uuid].health}));
-
-
-                        if (Global.users[cmd.uuid].health === 0) {
-                            //Send death here
-                            Global.users[cmd.uuid].reset();
-                            Global.users[cmd.uuid].socket.sendUTF(JSON.stringify({"score": Global.users[cmd.uuid].score}));
-                        }
-
-                        console.log(Global.users[cmd.uuid].location);
-                        //Global.users[cmd.uuid].socket.sendUTF(JSON.stringify({"score": Global.users[cmd.uuid].score}));
-                        //Global.users[cmd.uuid].socket.sendUTF(JSON.stringify({"health": Global.users[cmd.uuid].health}));
                         break;
                     case 'attack':
+                        Global.console.sendUTF(JSON.stringify({"uuid":cmd.uuid, "attack": true}));
                         var attackingUser = Global.users[cmd.uuid];
                         var victim;
                         switch (attackingUser.direction) {

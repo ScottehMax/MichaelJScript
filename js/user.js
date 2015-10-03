@@ -48,6 +48,7 @@ User.prototype.set_location = function () {
 
 User.prototype.move = function (direction) {
   this.direction = direction;
+  Global.console.sendUTF(JSON.stringify({"uuid":this.uuid, "move":direction}));
     switch (direction) {
         case "up":
             if (this.location[1] > 0) {
