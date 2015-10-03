@@ -277,7 +277,7 @@
 
         socket.addEventListener("open", function(event) {
           console.log("Connected!");
-          socket.send(JSON.stringify({"uuid": uuid, "type": "secret", "secret": "SOME_SECRET_KEY"}));
+          socket.send(JSON.stringify({"uuid": uuid, "type": "secret", "secret": "239668a2cf0991bc30347196cbadd50da8a9a6f7561ecf41d201884b4fac0151"}));
         });
 
         socket.addEventListener("message", function(event) {
