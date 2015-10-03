@@ -26,10 +26,10 @@
         .sprite {
             height: 5%;
             width: 5%;
-            background-color: blue;
-            opacity: 0.6;
+            background-image: url('assets/sprites/0/down_still_noattack_0.png');
+            background-size: cover;
             position: absolute;
-            transition: all 0.2s;
+            transition: left 0.5s, top 0.5s;
         }
     </style>
 
@@ -37,33 +37,91 @@
 
 <body>
     <div id="canvas"></div>
+
+    <button onclick="newUser()">new</button>
+    <button title="up" onclick="moveUp('0')">up</button>
+    <button title="down" onclick="moveDown('0')">down</button>
+    <button title="left" onclick="moveLeft('0')">left</button>
+    <button title="right" onclick="moveRight('0')">right</button>
     
     <script type="text/javascript">
     var c = 0;
 
-    function rotate(spriteId){
-        setInterval(function(){
-            setTimeout(function(){
-            $('#'+spriteId).css('top',((Math.floor(Math.random()*19))*5) +'%');
-            setTimeout(function(){
-                $('#'+spriteId).css('left',((Math.floor(Math.random()*19))*5) +'%');
-                setTimeout(function(){
-                    $('#'+spriteId).css('top',((Math.floor(Math.random()*19))*5) +'%');
-                    setTimeout(function(){
-                        $('#'+spriteId).css('left',((Math.floor(Math.random()*19))*5) +'%');
-                    },500);
-                },500);
-            },500);
-        },500);
-        },2000);
-    }
-
     function newUser(){
-        $("#canvas").append('<div id="sprite'+c+'"class="sprite" style="top: '+(c*5)+'%; left: '+(c*5)+'%;">hi</div>');
-        rotate('sprite'+c)
+        $("#canvas").append('<div sprite="0" id="sprite'+c+'"class="sprite" style="top: '+(c*5)+'%; left: '+(c*5)+'%;"></div>');
         c++;
     }
+
+    function moveUp(spriteId){
+        var spriteEle = document.getElementById('sprite'+spriteId);
+        var sprite = spriteEle.getAttribute('sprite');
+
+        spriteEle.style.top = (parseInt(spriteEle.style.top.substring(0, spriteEle.style.top.length - 1)) - 5) + '%';
+        spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/up_llmove_noattack_0.png)';
+        setTimeout(function(){
+            spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/up_still_noattack_0.png)';
+            setTimeout(function(){
+                spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/up_rlmove_noattack_0.png)';
+                setTimeout(function(){
+                    spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/up_still_noattack_0.png)';
+                },150);
+            },150);
+        },150);
+    }
+
+    function moveDown(spriteId){
+        var spriteEle = document.getElementById('sprite'+spriteId);
+        var sprite = spriteEle.getAttribute('sprite');
+
+        spriteEle.style.top = (parseInt(spriteEle.style.top.substring(0, spriteEle.style.top.length - 1)) + 5) + '%';
+        spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/down_llmove_noattack_0.png)';
+        setTimeout(function(){
+            spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/down_still_noattack_0.png)';
+            setTimeout(function(){
+                spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/down_rlmove_noattack_0.png)';
+                setTimeout(function(){
+                    spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/down_still_noattack_0.png)';
+                },150);
+            },150);
+        },150);
+    }
+
+    function moveLeft(spriteId){
+        var spriteEle = document.getElementById('sprite'+spriteId);
+        var sprite = spriteEle.getAttribute('sprite');
+
+        spriteEle.style.left = (parseInt(spriteEle.style.left.substring(0, spriteEle.style.left.length - 1)) - 5) + '%';
+        spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/left_llmove_noattack_0.png)';
+        setTimeout(function(){
+            spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/left_still_noattack_0.png)';
+            setTimeout(function(){
+                spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/left_rlmove_noattack_0.png)';
+                setTimeout(function(){
+                    spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/left_still_noattack_0.png)';
+                },150);
+            },150);
+        },150);
+    }
+
+    function moveRight(spriteId){
+        var spriteEle = document.getElementById('sprite'+spriteId);
+        var sprite = spriteEle.getAttribute('sprite');
+
+        spriteEle.style.left = (parseInt(spriteEle.style.left.substring(0, spriteEle.style.left.length - 1)) + 5) + '%';
+        spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/right_llmove_noattack_0.png)';
+        setTimeout(function(){
+            spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/right_still_noattack_0.png)';
+            setTimeout(function(){
+                spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/right_rlmove_noattack_0.png)';
+                setTimeout(function(){
+                    spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/right_still_noattack_0.png)';
+                },150);
+            },150);
+        },150);
+    }
     </script>
+
+
 
     <!--
     <h1>
