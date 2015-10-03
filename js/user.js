@@ -24,8 +24,6 @@ User.prototype.set_name = function (name) {
     console.log("setting name to " + name);
 
     this.set_location();
-
-    console.log(this);
 }
 
 User.prototype.set_job = function(job) {
@@ -121,6 +119,7 @@ User.prototype.set_leaderboard = function () {
 
 User.prototype.destroy = function () {
     if(this.name) this.set_leaderboard();
+    utils.sendConsole(JSON.stringify({"type": "delete", "uuid": this.uuid}));
     delete Global.users[this.uuid];
     console.log(this.uuid + " destroyed.");
 }
