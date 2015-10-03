@@ -372,7 +372,7 @@
 
 
   <script type="text/javascript">
-
+  var deathtimeout = false;
     $(function() {
       FastClick.attach(document.body);
     });
@@ -453,7 +453,13 @@
     function hideMain(){
       $('#main').fadeOut(300).delay(0.3).css('top', 0);
     }
+
     function hideDeath(){
+      if (deathtimeout) return false;
+      deathtimeout = true;
+      setTimeout(function(){
+        deathtimeout = false;
+      }, 500);
       $('#death').fadeOut(300).delay(0.3).css('top', 0);
       getInfo(uuid);
       socket.send(JSON.stringify({"type": "respawn", "uuid": uuid}));
