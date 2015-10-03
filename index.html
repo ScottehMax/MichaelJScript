@@ -30,6 +30,10 @@
             navigator.vibrate(50);
         }
     }
+    
+    function set_sprite(sprite) {
+        socket.send(JSON.stringify({"uuid": uuid, "type": "set_sprite", "sprite": sprite}));
+    }
 
     function set_name(name) {
         socket.send(JSON.stringify({"uuid": uuid, "type": "set_name", "name": name}));
@@ -302,17 +306,17 @@
     <div id="welcome_step1">
       Choose your warrior
       <div id="spriteSelector">
-        <div class="sprite" style="background-image: url(assets/sprites/0/spinner.gif)"></div>
-        <div class="sprite" style="background-image: url(assets/sprites/1/spinner.gif)"></div>
-        <div class="sprite" style="background-image: url(assets/sprites/2/spinner.gif)"></div>
-        <div class="sprite" style="background-image: url(assets/sprites/3/spinner.gif)"></div>
-        <div class="sprite" style="background-image: url(assets/sprites/4/spinner.gif)"></div>
+        <div class="sprite" id="sprite0" style="background-image: url(assets/sprites/0/spinner.gif)" onClick="clickedSprite(this.id)"></div>
+        <div class="sprite" id="sprite1" style="background-image: url(assets/sprites/1/spinner.gif)" onClick="clickedSprite(this.id)"></div>
+        <div class="sprite" id="sprite2" style="background-image: url(assets/sprites/2/spinner.gif)" onClick="clickedSprite(this.id)"></div>
+        <div class="sprite" id="sprite3" style="background-image: url(assets/sprites/3/spinner.gif)" onClick="clickedSprite(this.id)"></div>
+        <div class="sprite" id="sprite4" style="background-image: url(assets/sprites/4/spinner.gif)" onClick="clickedSprite(this.id)"></div>
         <div class="clear"></div>
-        <div class="sprite" style="background-image: url(assets/sprites/5/spinner.gif)"></div>
-        <div class="sprite" style="background-image: url(assets/sprites/6/spinner.gif)"></div>
-        <div class="sprite" style="background-image: url(assets/sprites/7/spinner.gif)"></div>
-        <div class="sprite" style="background-image: url(assets/sprites/8/spinner.gif)"></div>
-        <div class="sprite" style="background-image: url(assets/sprites/9/spinner.gif)"></div>
+        <div class="sprite" id="sprite5" style="background-image: url(assets/sprites/5/spinner.gif)" onClick="clickedSprite(this.id)"></div>
+        <div class="sprite" id="sprite6" style="background-image: url(assets/sprites/6/spinner.gif)" onClick="clickedSprite(this.id)"></div>
+        <div class="sprite" id="sprite7" style="background-image: url(assets/sprites/7/spinner.gif)" onClick="clickedSprite(this.id)"></div>
+        <div class="sprite" id="sprite8" style="background-image: url(assets/sprites/8/spinner.gif)" onClick="clickedSprite(this.id)"></div>
+        <div class="sprite" id="sprite9" style="background-image: url(assets/sprites/9/spinner.gif)" onClick="clickedSprite(this.id)"></div>
       </div>
     </div>
     <div id="welcome_step2" style="display: none">
@@ -373,9 +377,9 @@
       FastClick.attach(document.body);
     });
     
-    $('.sprite').on('click', function(){
-      showStep2();
-    })
+    function clickedSprite(spriteID) {
+        showStep2(spriteID);
+    }
 
     function getInfo(uuid) {
       socket.send(JSON.stringify({"type": "get_info", "uuid": uuid}));
@@ -387,11 +391,13 @@
       $('#hearts').html(heart.repeat(h) + noheart.repeat(3 - h))
     }
 
-    function showStep2(){
+    function showStep2(spriteID){
       function validateName(strIn){
         return /[A-Z0-9]{1}/ig.test(strIn) && strIn.length == 1;
       }
 
+      set_sprite(spriteID);
+      
       $('#welcome_step1').fadeOut(300).delay(0.3).css('height',0);
       setTimeout(function(){
         $('#welcome_step2').fadeIn(300);
