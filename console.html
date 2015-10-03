@@ -14,7 +14,33 @@
             font-weight: bold; }
         h2 { font-size: 20px;
             font-weight: bold; }
-        canvas { position:absolute; }
+        
+        section {
+            float: left;
+            width: 750px;
+            position: absolute;
+        }
+            
+        aside {
+            float: left;
+            margin-left: 800px;
+            position: relative;
+            border: 2px solid;
+        }
+            
+        #titleRow {
+            float: top;
+            height: 20px;
+            padding-bottom: 3px;
+        }
+        
+        #scoresRows {
+            float: top;
+            margin-top: 20px;
+            padding: 3px;
+            border-top: 1px solid;
+            
+        }
 
         #canvas {
             height: 750px;
@@ -31,18 +57,35 @@
             position: absolute;
             transition: left 0.5s, top 0.5s;
         }
+       
     </style>
 
 </head>
 
 <body>
-    <div id="canvas"></div>
+    
+        <section id= "canvasWrapper">
+            <div id="canvas"></div>
 
-    <button onclick="newUser()">new</button>
-    <button title="up" onclick="moveUp('0')">up</button>
-    <button title="down" onclick="moveDown('0')">down</button>
-    <button title="left" onclick="moveLeft('0')">left</button>
-    <button title="right" onclick="moveRight('0')">right</button>
+            <button onclick="newUser()">new</button>
+            <button title="up" onclick="moveUp('0')">up</button>
+            <button title="down" onclick="moveDown('0')">down</button>
+            <button title="left" onclick="moveLeft('0')">left</button>
+            <button title="right" onclick="moveRight('0')">right</button>
+    
+        </section>
+    
+        <aside id="scoreboard">
+            <div id="titleRow">
+                <h1>High scores</h1>
+            </div>
+            
+            <div id="scoresRows">
+                <ul>
+                    <li>#1: 9001</il>
+                </ul>
+            </div>
+        </aside>
     
     <script type="text/javascript">
     var c = 0;
