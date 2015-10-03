@@ -63,6 +63,7 @@ wsServer.on('request', function(request) {
         if (message.type === 'utf8') {
             try {
                 var cmd = JSON.parse(message.utf8Data);
+            
                 console.log(cmd);
 
                 switch (cmd.type) {
@@ -74,51 +75,68 @@ wsServer.on('request', function(request) {
                         break;
                     case 'try_move':
                         Global.users[cmd.uuid].move(cmd.direction);
+                        Global.users[cmd.uuid].score += 100;
+                        Global.users[cmd.uuid].socket.sendUTF(JSON.stringify({"score": Global.users[cmd.uuid].score}));
+                        // Global.users[cmd.uuid].health -= 1;
+                        Global.users[cmd.uuid].socket.sendUTF(JSON.stringify({"health": Global.users[cmd.uuid].health}));
+
+
+                        if (Global.users[cmd.uuid].health === 0) {
+                            //Send death here
+                            Global.users[cmd.uuid].reset();
+                            Global.users[cmd.uuid].socket.sendUTF(JSON.stringify({"score": Global.users[cmd.uuid].score}));
+                        }
+
+                        console.log(Global.users[cmd.uuid].location);
+                        //Global.users[cmd.uuid].socket.sendUTF(JSON.stringify({"score": Global.users[cmd.uuid].score}));
+                        //Global.users[cmd.uuid].socket.sendUTF(JSON.stringify({"health": Global.users[cmd.uuid].health}));
                         break;
                     case 'attack':
                         var attackingUser = Global.users[cmd.uuid];
+                        var victim;
                         switch (attackingUser.direction) {
                             case "up":
-                                if (this.location[1] > 0) {
-                                    var victim = Global.users[Global.arena[this.location[0]][this.location[1] - 1]];
-                                }
+                                var victim = Global.users[Global.arena[attackingUser.location[0]][attackingUser.location[1] - 1]];
                                 break;
                             case "down":
-                                if (this.location[1] < 19) {
-                                    var victim = Global.users[Global.arena[this.location[0]][this.location[1] + 1]];
-                                }
+                                var victim = Global.users[Global.arena[attackingUser.location[0]][attackingUser.location[1] + 1]];
                                 break;
                             case "left":
-                                if (this.location[0] > 0) {
-                                    var victim = Global.users[Global.arena[this.location[0] - 1][this.location[1]]];
-                                }
+                                var victim = Global.users[Global.arena[attackingUser.location[0] - 1][attackingUser.location[1]]];
                                 break;
                             case "right":
-                                if (this.location[0] < 19) {
-                                    var victim = Global.users[Global.arena[this.location[0] + 1][this.location[1]]];
-                                }
+                                var victim = Global.users[Global.arena[attackingUser.location[0] + 1][attackingUser.location[1]]];
                                 break;
-                                
-                            if (victim) {
-                                // Victim's health goes down
-                                victim.health--;
-                                // If health is zero, then send death and update user's score, otherwise send new health
-                                if (victim.health <= 0) {
-                                    //Send death here
-                                    victim.reset();
-                                    attackingUser.score += 100;
-                                } else {
-                                    // Send new health
-                                }
+                        }   
+                        if (victim) {
+                            // Victim's health goes down
+                            victim.health -= 1;
+                            // If health is zero, then send death and update user's score, otherwise send new health
+                            if (victim.health === 0) {
+                                //Send death here
+                                victim.socket.sendUTF(JSON.stringify({"score": victim.score,
+                                                                      "health": victim.health}));
+                                victim.reset();
+                                attackingUser.score += 100;
+                                attackingUser.socket.sendUTF(JSON.stringify({"score": attackingUser.score}));
+                            } else {
+                               victim.socket.sendUTF(JSON.stringify({"health": victim.health}));
                             }
                         }
+                        
+                        break;
+                    case 'get_info':
+                        Global.users[cmd.uuid].socket.sendUTF(JSON.stringify({"score": Global.users[cmd.uuid].score,
+                                                                              "health": Global.users[cmd.uuid].health}));
                 }
 
-                // checks for json here
             } catch (e) {
                 console.log("YOU BUGGERED IT: " + e);
                 connection.sendUTF('Error: invalid JSON');
+                var cmd = {};
             }
+
+                // checks for json here
             console.log('Received Message: ' + message.utf8Data);
             connection.sendUTF(message.utf8Data + ' received!');
         }

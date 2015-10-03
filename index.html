@@ -9,6 +9,10 @@
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
   <script>
     "use strict";
+
+    String.prototype.repeat = function( num ) {
+        return new Array( num + 1 ).join( this );
+    }
     // Initialize everything when the window finishes loading
     var uuid;
     var socket;
@@ -29,6 +33,10 @@
 
     function set_job(job) {
         socket.send(JSON.stringify({"uuid": uuid, "type": "set_job", "job": job}));
+    }
+
+    function attack() {
+        socket.send(JSON.stringify({"type": "attack", "uuid": uuid}))
     }
 
     function hideKeyboard() {
@@ -90,6 +98,19 @@
               uuid = res.uuid;
               console.log(uuid);
             }
+
+            if (res.score || typeof(res.score) === "number") {
+              $('#score').text(' ' + res.score + ' ');
+            }
+
+            if (res.health || typeof(res.health) !== "boolean") {
+              if (res.health < 1) {
+                showDeath();
+              } else {
+                setHealth(res.health);
+              }
+            }
+
           } catch (e) {
             //console.log(e);
           }
@@ -237,7 +258,7 @@
         width: 80px;
         position: absolute;
         top: 35px;
-        left: 35px;
+        left: 50px;
       }
 
     #death {
@@ -309,10 +330,10 @@
       <div id="hearts">
         <img src="img/heart.png">
         <img src="img/heart.png">
-        <img src="img/heart_off.png">
+        <img src="img/heart.png">
       </div>
       <div id="score">
-        100
+        0
       </div>
     </div>
     <div id="mainCont">
@@ -327,7 +348,7 @@
 
       <div id="mainMiddle"></div>
       <div id="mainButtonCont">
-        <img src="img/red.png">
+        <img src="img/red.png" onclick="javascript:attack()">
       </div>
     </div>
   </div>
@@ -346,6 +367,16 @@
     $('.sprite').on('click', function(){
       showStep2();
     })
+
+    function getInfo(uuid) {
+      socket.send(JSON.stringify({"type": "get_info", "uuid": uuid}));
+    }
+
+    function setHealth(h){
+      var heart = ' <img src="img/heart.png"> ';
+      var noheart = ' <img src="img/heart_off.png"> ';
+      $('#hearts').html(heart.repeat(h) + noheart.repeat(3 - h))
+    }
 
     function showStep2(){
       function validateName(strIn){
@@ -409,6 +440,7 @@
     }
     function hideDeath(){
       $('#death').fadeOut(300).delay(0.3).css('top', 0);
+      getInfo(uuid);
     }
   </script>
 </body>

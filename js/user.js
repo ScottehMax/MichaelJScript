@@ -23,9 +23,9 @@ User.prototype.set_name = function (name) {
     this.name = name;
     console.log("setting name to " + name);
 
-    console.log(this);
-
     this.set_location();
+
+    console.log(this);
 }
 
 User.prototype.set_job = function(job) {
@@ -70,7 +70,7 @@ User.prototype.move = function (direction) {
             if (this.location[0] > 0) {
                 if (!(Global.arena[this.location[0] - 1][this.location[1]])) {
                     Global.arena[this.location[0]][this.location[1]] = false;
-                    this.location[1] -= 1;
+                    this.location[0] -= 1;
                     Global.arena[this.location[0]][this.location[1]] = this.uuid;
                     console.log("moving left");
                 }
