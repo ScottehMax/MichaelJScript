@@ -40,6 +40,9 @@ User.prototype.set_location = function () {
     }
 
     this.location = try_location;
+
+    Global.console.send(JSON.stringify({"type":"new", "user":{"uuid":this.uuid, "sprite":this.sprite, "top":this.location[0], "left":this.location[1]}}))
+
     Global.arena[this.location[0]][this.location[1]] = this.uuid;
 }
 
