@@ -55,7 +55,7 @@ User.prototype.move = function (direction) {
                     this.location[1] -= 1;
                     Global.arena[this.location[0]][this.location[1]] = this.uuid;
                     console.log("moving up");
-                    utils.sendConsole(JSON.stringify({"uuid":this.uuid, "move":direction}));
+                    utils.sendConsole(JSON.stringify({"uuid":this.uuid, "move":direction, "top":this.location[1], "left":this.location[0]}));
                     didMove = true;
                 }
             }
@@ -67,7 +67,7 @@ User.prototype.move = function (direction) {
                     this.location[1] += 1;
                     Global.arena[this.location[0]][this.location[1]] = this.uuid;
                     console.log("moving down");
-                    utils.sendConsole(JSON.stringify({"uuid":this.uuid, "move":direction}));
+                    utils.sendConsole(JSON.stringify({"uuid":this.uuid, "move":direction, "top":this.location[1], "left":this.location[0]}));
                     didMove = true;
                 }
             }
@@ -79,7 +79,7 @@ User.prototype.move = function (direction) {
                     this.location[0] -= 1;
                     Global.arena[this.location[0]][this.location[1]] = this.uuid;
                     console.log("moving left");
-                    utils.sendConsole(JSON.stringify({"uuid":this.uuid, "move":direction}));
+                    utils.sendConsole(JSON.stringify({"uuid":this.uuid, "move":direction, "top":this.location[1], "left":this.location[0]}));
                     didMove = true;
                 }
             }
