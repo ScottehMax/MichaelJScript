@@ -139,10 +139,10 @@ User.prototype.move = function (direction) {
             }
             break;
         }
-                            console.log(Global.powerup);
-                    console.log(Global.poweruptype);
-                    console.log(Global.powerup[0] == this.location);
-                    console.log(this.location);
+                            // console.log(Global.powerup);
+                    // console.log(Global.poweruptype);
+                    // console.log(Global.powerup[0] == this.location);
+                    // console.log(this.location);
 
     if(!didMove) utils.sendConsole(JSON.stringify({"uuid":this.uuid, "turn":direction}));
 
