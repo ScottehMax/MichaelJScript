@@ -30,6 +30,19 @@ function originIsAllowed(origin) {
   return true;
 }
 
+function spawnPowerup() {
+    if (Math.floor(Math.random() * 100) === 0) {
+        var try_location = [utils.randint(0, 20), utils.randint(0, 20)];
+        while (Global.arena[try_location[0]][try_location[1]]) {
+            try_location = [utils.randint(0, 20), utils.randint(0, 20)];
+        }
+        Global.powerup.push(try_location);
+        var type = ["heart", "coin"][Math.floor(Math.random() * 2)];
+        Global.poweruptype.push(type);
+        Global.console.sendUTF(JSON.stringify({"type": "spawnPowerup", "powertype": type, "location": try_location}));
+    }
+}
+
 wsServer.on('request', function(request) {
     if (!originIsAllowed(request.origin)) {
       // Make sure we only accept requests from an allowed origin
@@ -70,6 +83,10 @@ wsServer.on('request', function(request) {
             }
             
             console.log(cmd);
+
+            setTimeout(function() {
+                spawnPowerup();
+            }, Math.floor(Math.random() * 10000));
 
             switch (cmd.type) {
                 case 'secret':

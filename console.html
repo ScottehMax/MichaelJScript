@@ -178,12 +178,43 @@
             }       
         }
 
-        function moveUp(spriteId){
-            var spriteEle = document.getElementById('sprite'+spriteId);
+        function spawnPowerup(location, type) {
+            var top = location[1];
+            var left = location[0];
+            $("#canvas").append('<div  id="powerup' + top + ',' + left + '"class="sprite" style="top: '+(top*5)+'%; left: '+(left*5)+'%; background-image: url(\'assets/sprites/'+type+'.gif\')"></div>');
+        }
+
+        function deletePowerup(location) {
+            var spriteEle = document.getElementById('powerup' + location[1] + ',' + location[0]);
+            spriteEle.remove();
+        }
+
+        function movePre(inObj){
+          var spriteEle = document.getElementById('sprite'+inObj.uuid);
+
+          spriteEle.style.top = (inObj.top*5).toString() + '%';
+          spriteEle.style.left = (inObj.left*5).toString() + '%';
+
+          switch(inObj.move){
+            case "up":
+              moveUp(spriteEle);
+              break;
+            case "down":
+              moveDown(spriteEle);
+              break;
+            case "left":
+              moveLeft(spriteEle);
+              break;
+            case "right":
+              moveRight(spriteEle);
+              break;
+          }
+        }
+
+        function moveUp(spriteEle){
             var sprite = spriteEle.getAttribute('sprite');
             spriteEle.setAttribute('dir', 'up');
 
-            spriteEle.style.top = (parseInt(spriteEle.style.top.substring(0, spriteEle.style.top.length - 1)) - 5) + '%';
             spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/up_llmove_noattack_'+sprite+'.png)';
             
             setTimeout(function(){
@@ -197,12 +228,10 @@
             },150);
         }
 
-        function moveDown(spriteId){
-            var spriteEle = document.getElementById('sprite'+spriteId);
+        function moveDown(spriteEle){
             var sprite = spriteEle.getAttribute('sprite');
             spriteEle.setAttribute('dir', 'down');
 
-            spriteEle.style.top = (parseInt(spriteEle.style.top.substring(0, spriteEle.style.top.length - 1)) + 5) + '%';
             spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/down_llmove_noattack_'+sprite+'.png)';
             setTimeout(function(){
                 spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/down_still_noattack_'+sprite+'.png)';
@@ -215,12 +244,10 @@
             },150);
         }
 
-        function moveLeft(spriteId){
-            var spriteEle = document.getElementById('sprite'+spriteId);
+        function moveLeft(spriteEle){
             var sprite = spriteEle.getAttribute('sprite');
             spriteEle.setAttribute('dir', 'left');
 
-            spriteEle.style.left = (parseInt(spriteEle.style.left.substring(0, spriteEle.style.left.length - 1)) - 5) + '%';
             spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/left_llmove_noattack_'+sprite+'.png)';
             setTimeout(function(){
                 spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/left_still_noattack_'+sprite+'.png)';
@@ -233,12 +260,10 @@
             },150);
         }
 
-        function moveRight(spriteId){
-            var spriteEle = document.getElementById('sprite'+spriteId);
+        function moveRight(spriteEle){
             var sprite = spriteEle.getAttribute('sprite');
             spriteEle.setAttribute('dir', 'right');
 
-            spriteEle.style.left = (parseInt(spriteEle.style.left.substring(0, spriteEle.style.left.length - 1)) + 5) + '%';
             spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/right_llmove_noattack_'+sprite+'.png)';
             setTimeout(function(){
                 spriteEle.style.backgroundImage = 'url(assets/sprites/'+sprite+'/right_still_noattack_'+sprite+'.png)';
@@ -364,20 +389,7 @@
                 }
 
                 if (res.move) {
-                  switch(res.move){
-                    case "up":
-                      moveUp(res.uuid);
-                      break;
-                    case "down":
-                      moveDown(res.uuid);
-                      break;
-                    case "left":
-                      moveLeft(res.uuid);
-                      break;
-                    case "right":
-                      moveRight(res.uuid);
-                      break;
-                  }
+                  movePre(res);
                 }
 
                 if (res.turn) {
@@ -399,6 +411,15 @@
                 if (res.type && res.type == "leaderboard") {
                     updateBoard(res.leaderboard);
                 }
+
+                if (res.type && res.type == "spawnPowerup") {
+                    spawnPowerup(res.location, res.powertype);
+                }
+
+                if (res.type && res.type == "deletePowerup") {
+                    deletePowerup(res.location);
+                }
+
 
               } catch (e) {
                 //console.log(e);
