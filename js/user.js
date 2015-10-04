@@ -91,7 +91,7 @@ User.prototype.move = function (direction) {
                     this.location[0] += 1;
                     Global.arena[this.location[0]][this.location[1]] = this.uuid;
                     console.log("moving right");
-                    utils.sendConsole(JSON.stringify({"uuid":this.uuid, "move":direction}));
+                    utils.sendConsole(JSON.stringify({"uuid":this.uuid, "move":direction, "top":this.location[1], "left":this.location[0]}));
                     didMove = true;
                 }
             }
