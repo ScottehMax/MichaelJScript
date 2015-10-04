@@ -124,17 +124,17 @@ wsServer.on('request', function(request) {
                             }
                         }
                     } catch (e) {
-                        console.log('########################');
-                        console.log('########################');
-                        console.log('########################');
-                        console.log('########################');
+                        // console.log('########################');
+                        // console.log('########################');
+                        // console.log('########################');
+                        // console.log('########################');
                         console.log(attackingUser.location);
                         console.log(attackingUser.direction);
-                        console.log('########################');
-                        console.log('########################');
-                        console.log('########################');
-                        console.log('########################');
-                        utils.sendConsole('"a": "console.log(########################);"');
+                        // console.log('########################');
+                        // console.log('########################');
+                        // console.log('########################');
+                        // console.log('########################');
+                        utils.sendConsole('oops');
                     }  
                     if (victim) {
                         // Victim's health goes down
