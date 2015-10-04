@@ -178,6 +178,17 @@
             }       
         }
 
+        function spawnPowerup(location, type) {
+            var top = location[1];
+            var left = location[0];
+            $("#canvas").append('<div  id="powerup' + top + ',' + left + '"class="sprite" style="top: '+(top*5)+'%; left: '+(left*5)+'%; background-image: url(\'assets/sprites/'+type+'.gif\')"></div>');
+        }
+
+        function deletePowerup(location) {
+            var spriteEle = document.getElementById('powerup' + location[1] + ',' + location[0]);
+            spriteEle.remove();
+        }
+
         function movePre(inObj){
           var spriteEle = document.getElementById('sprite'+inObj.uuid);
 
@@ -400,6 +411,15 @@
                 if (res.type && res.type == "leaderboard") {
                     updateBoard(res.leaderboard);
                 }
+
+                if (res.type && res.type == "spawnPowerup") {
+                    spawnPowerup(res.location, res.powertype);
+                }
+
+                if (res.type && res.type == "deletePowerup") {
+                    deletePowerup(res.location);
+                }
+
 
               } catch (e) {
                 //console.log(e);

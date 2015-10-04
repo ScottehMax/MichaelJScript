@@ -44,6 +44,16 @@ User.prototype.set_location = function () {
     Global.arena[this.location[0]][this.location[1]] = this.uuid;
 }
 
+User.prototype.powerup = function (type) {
+    if (type == "heart" && this.health < 3) {
+        this.health += 1;
+        this.socket.sendUTF(JSON.stringify({"health": this.health}))
+    } else if (type == "coin") {
+        this.score += 50;
+        this.socket.sendUTF(JSON.stringify({"score": this.score}))
+    }
+}
+
 User.prototype.move = function (direction) {
   this.direction = direction;
   var didMove = false;
@@ -54,6 +64,14 @@ User.prototype.move = function (direction) {
                     Global.arena[this.location[0]][this.location[1]] = false;
                     this.location[1] -= 1;
                     Global.arena[this.location[0]][this.location[1]] = this.uuid;
+                    for (var i=0; i<Global.powerup.length; i++) {
+                        if (utils.arraysEqual(Global.powerup[i], this.location)) {
+                            this.powerup(Global.poweruptype[i]);
+                            Global.powerup.splice(i, 1);
+                            Global.poweruptype.splice(i, 1);
+                            Global.console.sendUTF(JSON.stringify({"type": "deletePowerup", "location": this.location}));
+                        }
+                    }
                     console.log("moving up");
                     utils.sendConsole(JSON.stringify({"uuid":this.uuid, "move":direction, "top":this.location[1], "left":this.location[0]}));
                     didMove = true;
@@ -66,6 +84,14 @@ User.prototype.move = function (direction) {
                     Global.arena[this.location[0]][this.location[1]] = false;
                     this.location[1] += 1;
                     Global.arena[this.location[0]][this.location[1]] = this.uuid;
+                    for (var i=0; i<Global.powerup.length; i++) {
+                        if (utils.arraysEqual(Global.powerup[i], this.location)) {
+                            this.powerup(Global.poweruptype[i]);
+                            Global.powerup.splice(i, 1);
+                            Global.poweruptype.splice(i, 1);
+                            Global.console.sendUTF(JSON.stringify({"type": "deletePowerup", "location": this.location}));
+                        }
+                    }
                     console.log("moving down");
                     utils.sendConsole(JSON.stringify({"uuid":this.uuid, "move":direction, "top":this.location[1], "left":this.location[0]}));
                     didMove = true;
@@ -78,6 +104,14 @@ User.prototype.move = function (direction) {
                     Global.arena[this.location[0]][this.location[1]] = false;
                     this.location[0] -= 1;
                     Global.arena[this.location[0]][this.location[1]] = this.uuid;
+                    for (var i=0; i<Global.powerup.length; i++) {
+                        if (utils.arraysEqual(Global.powerup[i], this.location)) {
+                            this.powerup(Global.poweruptype[i]);
+                            Global.powerup.splice(i, 1);
+                            Global.poweruptype.splice(i, 1);
+                            Global.console.sendUTF(JSON.stringify({"type": "deletePowerup", "location": this.location}));
+                        }
+                    }
                     console.log("moving left");
                     utils.sendConsole(JSON.stringify({"uuid":this.uuid, "move":direction, "top":this.location[1], "left":this.location[0]}));
                     didMove = true;
@@ -90,6 +124,14 @@ User.prototype.move = function (direction) {
                     Global.arena[this.location[0]][this.location[1]] = false;
                     this.location[0] += 1;
                     Global.arena[this.location[0]][this.location[1]] = this.uuid;
+                    for (var i=0; i<Global.powerup.length; i++) {
+                        if (utils.arraysEqual(Global.powerup[i], this.location)) {
+                            this.powerup(Global.poweruptype[i]);
+                            Global.powerup.splice(i, 1);
+                            Global.poweruptype.splice(i, 1);
+                            Global.console.sendUTF(JSON.stringify({"type": "deletePowerup", "location": this.location}));
+                        }
+                    }
                     console.log("moving right");
                     utils.sendConsole(JSON.stringify({"uuid":this.uuid, "move":direction, "top":this.location[1], "left":this.location[0]}));
                     didMove = true;
@@ -97,6 +139,10 @@ User.prototype.move = function (direction) {
             }
             break;
         }
+                            console.log(Global.powerup);
+                    console.log(Global.poweruptype);
+                    console.log(Global.powerup[0] == this.location);
+                    console.log(this.location);
 
     if(!didMove) utils.sendConsole(JSON.stringify({"uuid":this.uuid, "turn":direction}));
 

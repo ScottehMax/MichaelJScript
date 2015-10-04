@@ -20,3 +20,7 @@ exports.sendConsole = function (s) {
     Global.console.sendUTF(s);
     console.log("sending " + s + " to console");
 }
+
+exports.arraysEqual = function (a1,a2) {
+    return JSON.stringify(a1)==JSON.stringify(a2);
+}
