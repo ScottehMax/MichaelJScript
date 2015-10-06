@@ -15,7 +15,6 @@ gulp.task('serverscripts', function() {
   return gulp.src(['app.js', 'js/*.js'])
     .pipe(jshint('.jshintrc'))
     .pipe(jshint.reporter('default'))
-    .pipe(notify({ message: 'Scripts task complete' }));
 });
 
 gulp.task('scripts', function() {
@@ -29,7 +28,6 @@ gulp.task('scripts', function() {
     .pipe(uglify())
     .pipe(gulp.dest('dist/scripts'))
     */
-    .pipe(notify({ message: 'Scripts task complete' }));
 });
 
 gulp.task('clean', function(cb) {
