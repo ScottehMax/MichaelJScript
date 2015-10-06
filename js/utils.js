@@ -1,5 +1,3 @@
-/*jslint node: true */
-/*jslint bitwise: true */
 "use strict";
 
 var Global = require('./global.js');
