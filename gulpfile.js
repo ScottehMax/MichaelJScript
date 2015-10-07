@@ -34,7 +34,9 @@ gulp.task('clean', function(cb) {
     del(['dist/assets/css', 'dist/assets/js', 'dist/assets/img'], cb)
 });
 
-gulp.task('default', ['clean'], function() {
+gulp.task('build', function(cb) {
     gulp.start('serverscripts');
     gulp.start('scripts');
 });
+
+gulp.task('default', ['build']);
