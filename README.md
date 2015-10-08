@@ -9,4 +9,9 @@ A multiplayer arena. The lost gem of the 80's. Anybody and everybody can use the
 
 --------
 
+####Installation and Setup
+Instructions pending. I will get around to it within a week or two.
+
+--------
+
 This project is released under the terms of the DBAD Licence.
