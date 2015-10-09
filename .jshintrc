@@ -1,3 +1,6 @@
 {
-  "node": true
+  "node": true,
+  "eqeqeq": true,
+  "strict": true,
+  "maxerr": 1
 }
