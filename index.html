@@ -11,6 +11,11 @@
   <script>
     "use strict";
 
+    var req = new XMLHttpRequest();
+    req.open('GET', document.location, false);
+    req.send(null);
+    var URL = req.getResponseHeader('Socket-Url');
+
     var beep = new Audio('audio/beep.wav');
     var strike = new Audio('audio/strike.wav');
 
@@ -103,9 +108,7 @@
       }
 
 
-      window.scrollTo(0,1) 
-
-      URL = "ws://guts2015ws.ngrok.com";
+      window.scrollTo(0,1);
 
       // create new socket on page load
       socket = new WebSocket(URL, "echo-protocol");
@@ -272,6 +275,7 @@
         height: 150px;
         width: 100px;
         float: left;
+        pointer-events: none;
       }
       #mainButtonCont {
         height: 150px;
@@ -358,7 +362,7 @@
         <img src="img/heart.png">
         <img src="img/heart.png">
       </div>
-      <div style="text-align: center;top: 80px;position: relative;" id="username"></div>
+      <div style="text-align: center;top: 80px;position: relative;pointer-events: none;" id="username"></div>
       <div id="spriteview" style="margin: 25px auto; height: 55px; width: 55px; background-size: cover;text-align: center;top: 80px;position: relative;">
      </div>
       <div id="score">
