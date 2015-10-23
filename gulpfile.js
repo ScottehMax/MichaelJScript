@@ -26,6 +26,7 @@ gulp.task('serverscripts', function() {
   return gulp.src(['app.js', 'js/*.js'])
     .pipe(jshint())
     .pipe(jshint.reporter('default'))
+    .pipe(jshint.reporter('fail'))
     .on('error', function() {
       handleError('Server Scripts');
     });
@@ -35,6 +36,7 @@ gulp.task('scripts', function() {
   return gulp.src('js/*.js')
     .pipe(jshint('.jshintrc'))
     .pipe(jshint.reporter('default'))
+    .pipe(jshint.reporter('fail'))
     .on('error', function() {
       handleError('Client Scripts');
     });
