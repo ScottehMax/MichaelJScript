@@ -160,6 +160,11 @@
         var c = 0;
         var socket;
 
+        var req = new XMLHttpRequest();
+        req.open('GET', document.location, false);
+        req.send(null);
+        var URL = req.getResponseHeader('Socket-Url');
+
         function newUser(user){
             var sprite = user.sprite;
             var userUuid = user.uuid;
@@ -357,8 +362,6 @@
 
             var uuid = false;
             var auth = false;
-
-            var URL = "ws://guts2015ws.ngrok.com";
 
             // create new socket on page load
             socket = new WebSocket(URL, "echo-protocol");
