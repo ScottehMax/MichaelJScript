@@ -1,37 +1,97 @@
 /*jslint node: true */
 "use strict";
 
-var Global = require('./js/global.js');
-console.log(Global);
-var user = require('./js/user.js');
-var utils = require('./js/utils.js');
+var Global = require('./js/global.js'),
+    user = require('./js/user.js'),
+    utils = require('./js/utils.js'),
+    WebSocketServer = require('websocket').server,
+    localtunnel = require('localtunnel'),
+    http = require('http'),
+    url = require("url"),
+    path = require("path"),
+    fs = require("fs");
 
-var PORT = 9001;
 var MAX_USERS = 20;
+var socketUrl = '';
 
+// Hi everyone!
+console.log('\n   ===================================================\n');
+console.log('  #   #   #    #### #   #  #### #       #    #### #   #');
+console.log('  #   #  # #  #     #  #  #     #      # #  #     #   #');
+console.log('  #   #  # #  #     # #   #     #      # #  #     #   #');
+console.log('  ##### ##### #     ##     ###  #     #####  ###  #####');
+console.log('  #   # #   # #     # #       # #     #   #     # #   #');
+console.log('  #   # #   # #     #  #      # #     #   #     # #   #');
+console.log('  #   # #   #  #### #   # ####  ##### #   # ####  #   #');
+console.log('\n   ===================================================\n');
 
-var WebSocketServer = require('websocket').server;
-var http = require('http');
-
-var server = http.createServer(function (request, response) {
-  console.log((new Date()) + ' Received request for ' + request.url);
+// Set up websocket server
+var socketServer = http.createServer(function (request, response) {
   response.writeHead(404);
   response.end();
 });
 
-server.listen(PORT, function () {
-  console.log((new Date()) + ' | Server is listening on port ' + PORT);
+socketServer.listen(9001, function () {
+  console.log('[SETP] Websocket server live on port 9001');
 });
 
 var wsServer = new WebSocketServer({
-  httpServer: server,
+  httpServer: socketServer,
   autoAcceptConnections: false
 });
 
-function originIsAllowed() {
-  // put logic here to detect whether the specified origin is allowed.
-  return true;
-}
+var socketTunnel = localtunnel(9001, {'subdomain': 'guts2015ws'}, function(err, tunnel) {
+  socketUrl = 'ws' + tunnel.url.substring(5);
+  console.log('[SETP] Websocket server public on ' + socketUrl);
+});
+
+// Set up web server
+var webServer = http.createServer(function(request, response) {
+
+  var uri = url.parse(request.url).pathname,
+      filename = path.join(process.cwd(), uri);
+
+  if(uri == '/getSocketUrl'){
+    response.writeHead(200, {"Content-Type": "text/json"});
+    response.write(socketUrl);
+    response.end();
+    return;
+  }
+
+  fs.exists(filename, function(exists) {
+    if(!exists) {
+      response.writeHead(404, {"Content-Type": "text/plain"});
+      response.write("404 Not Found\n");
+      response.end();
+      return;
+    }
+
+    if (fs.statSync(filename).isDirectory()) filename += '/index.html';
+
+    fs.readFile(filename, "binary", function(err, file) {
+      if(err) {        
+        response.writeHead(500, {"Content-Type": "text/plain"});
+        response.write(err + "\n");
+        response.end();
+        return;
+      }
+
+      response.writeHead(200, {"Socket-Url": socketUrl});
+      response.write(file, "binary");
+      response.end();
+    });
+  });
+});
+
+webServer.listen(80, function () {
+  console.log('[SETP] Web server live on port 80');
+});
+
+var webTunnel = localtunnel(80, {'subdomain': 'guts2015'}, function(err, tunnel) {
+  console.log('[SETP] Web server public on ' + tunnel.url);
+});
+
+function originIsAllowed() { return true; }
 
 function spawnPowerup() {
   if (Math.floor(Math.random() * 100) === 0) {
@@ -49,30 +109,28 @@ wsServer.on('request', function (request) {
   if (!originIsAllowed()) {
     // Make sure we only accept requests from an allowed origin
     request.reject();
-    console.log((new Date()) + ' Connection from origin ' + request.origin + ' rejected.');
     return;
   }
 
   if (Object.keys(Global.users).length > MAX_USERS) {
 
     request.reject();
-    console.log((new Date()) + ' Connection from origin ' + request.origin + ' rejected.');
     return;
     // too many users!
   }
 
-  console.log('someone is connecting!');
+  console.log('[INFO] User Connecting...');
 
   var connection = request.accept('echo-protocol', request.origin);
   var new_user = new user.User(connection);
 
   connection.sendUTF(JSON.stringify({'uuid': new_user.uuid}));
   connection.uuid = new_user.uuid;
-  console.log("UUID assigned! Now they need to pick a name.");
+  console.log("[INFO] User UUID Assigned, picking name...");
 
   //console.log(Global.users);
 
-  console.log((new Date()) + ' Connection accepted.');
+  console.log('[INFO] User Connection Accepted.');
 
   connection.on('message', function (message) {
     if (message.type === 'utf8') {
@@ -80,7 +138,7 @@ wsServer.on('request', function (request) {
       try {
         cmd = JSON.parse(message.utf8Data);
       } catch (e) {
-        console.log("YOU BUGGERED IT: " + e);
+        console.log("[ERRR] " + e);
         connection.sendUTF('Error: invalid JSON');
         cmd = {};
       }
@@ -105,9 +163,11 @@ wsServer.on('request', function (request) {
         break;
       case 'respawn':
         Global.users[cmd.uuid].set_location();
+        console.log('[INFO] ' + Global.users[cmd.uuid].name + ' respawned.')
         break;
       case 'set_name':
         Global.users[cmd.uuid].set_name(cmd.name);
+        console.log('[INFO] Hello ' + Global.users[cmd.uuid].name + '!')
         break;
       case 'set_job':
         Global.users[cmd.uuid].set_job(cmd.job);
@@ -143,16 +203,6 @@ wsServer.on('request', function (request) {
             }
           }
         } catch (e) {
-          // console.log('########################');
-          // console.log('########################');
-          // console.log('########################');
-          // console.log('########################');
-          console.log(attackingUser.location);
-          console.log(attackingUser.direction);
-          // console.log('########################');
-          // console.log('########################');
-          // console.log('########################');
-          // console.log('########################');
           utils.sendConsole('oops');
         }  
         if (victim) {
@@ -177,17 +227,17 @@ wsServer.on('request', function (request) {
                                     "health": Global.users[cmd.uuid].health}));
       }
 
-        // checks for json here
-      console.log('Received Message: ' + message.utf8Data);
+      // checks for json here
+      console.log('[RECV] ' + message.utf8Data);
       //connection.sendUTF(message.utf8Data + ' received!');
     }
     else if (message.type === 'binary') {
-      console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
+      console.log('[RECV] Binary: ' + message.binaryData.length + ' bytes');
       connection.sendBytes(message.binaryData);
     }
   });
   connection.on('close', function(reasonCode, description) {
-    console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
+    console.log('[INFO] ' + connection.remoteAddress + ' disconnected.');
     if(Global.users[connection.uuid]) Global.users[connection.uuid].destroy();
   });
 });
